@@ -1,3 +1,5 @@
+# Need to normalize string in the order that the number appears on the string
+
 defmodule Solve do
     def normalize_string(string) do
         names_numbers = %{"one" => "1", "two" => "2"}
@@ -26,10 +28,10 @@ defmodule Testing do
 
     def solve_file(path) do
         example_content = read_file(path)
-        numbers = example_content |> Enum.map(&Solve.extract_number(&1))
+        normalized_strings = example_content |> Enum.map(&Solve.normalize_string(&1))
+        numbers = normalized_strings |> Enum.map(&Solve.extract_number(&1))
         numbers |> Enum.reduce(fn num, sum -> num + sum end)
     end
 end
 
-
-Solve.extract_number("one1two")
+IO.puts(Testing.run_tests()[:example])
