@@ -7,7 +7,7 @@ defmodule Solve do
         end)
     end
 
-    def extract_numbers(string) do
+    def extract_number(string) do
         numbers = String.replace(string, ~r/[^\d]/, "")
         sliced_numbers = String.first(numbers) <> String.last(numbers)
         String.to_integer(sliced_numbers)
