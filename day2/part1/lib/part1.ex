@@ -51,6 +51,10 @@ defmodule Part1 do
       [create_game(line) | acc]
     end))
 
-    0
+    impossible_games = games |> Enum.filter(fn game ->
+      Map.keys(@max_qty) |> Enum.any?(fn key ->
+        Enum.max(game[key]) > @max_qty[key]
+      end)
+    end)
   end
 end
