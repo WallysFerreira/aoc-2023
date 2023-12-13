@@ -37,14 +37,18 @@ defmodule Part1 do
     Enum.reverse(values)
   end
 
+  def create_game(line) do
+    game = %{
+      :id => String.to_integer(String.slice(line, 5..5)),
+      :blue => get_values(line, "blue"),
+      :red => get_values(line, "red"),
+      :green => get_values(line, "green")
+    }
+  end
+
   def solve_file(path) do
-    read_file(path) |> Enum.map(fn line ->
-      game = %{
-        :id => String.to_integer(String.slice(line, 5..5)),
-        :blue => get_values(line, "blue"),
-        :red => get_values(line, "red"),
-        :green => get_values(line, "green")
-      }
+    games = read_file(path) |> Enum.reduce([], fn line, acc ->
+      [create_game(line) | acc]
     end)
 
     0
