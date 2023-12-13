@@ -3,6 +3,6 @@ defmodule Part1Test do
   doctest Part1
 
   test "solves example" do
-    assert Part1.solve_file("files/example") == 8
+    assert Part1.solve_part_1("files/example") == 8
   end
 end

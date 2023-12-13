@@ -8,7 +8,7 @@ defmodule Part1 do
 
   ## Examples
 
-      iex> Part1.solve_file("files/example")
+      iex> Part1.solve_part_1("files/example")
       8
 
   """
@@ -42,7 +42,7 @@ defmodule Part1 do
   end
 
   def create_game(line) do
-    game = %{
+    %{
       :id => get_id(line),
       :blue => get_values(line, "blue"),
       :red => get_values(line, "red"),
@@ -50,19 +50,25 @@ defmodule Part1 do
     }
   end
 
-  def solve_file(path) do
-    games = Enum.reverse(read_file(path) |> Enum.reduce([], fn line, acc ->
+  def get_all_games(path) do
+    Enum.reverse(read_file(path) |> Enum.reduce([], fn line, acc ->
       [create_game(line) | acc]
     end))
+  end
 
-    impossible_games = games |> Enum.filter(fn game ->
+  def get_impossible_games(path) do
+    get_all_games(path) |> Enum.filter(fn game ->
       Map.keys(@max_qty) |> Enum.any?(fn key ->
         Enum.max(game[key]) > @max_qty[key]
       end)
     end)
+  end
 
-    possible_games = games -- impossible_games
+  def get_possible_games(path) do
+    get_all_games(path) -- get_impossible_games(path)
+  end
 
-    possible_games |> Enum.reduce(0, fn game, acc -> acc + game.id end)
+  def solve_part_1(path) do
+    Enum.reduce(get_possible_games(path), 0, fn game, acc -> acc + game.id end)
   end
 end
