@@ -8,7 +8,7 @@ defmodule Part1 do
 
   ## Examples
 
-      iex> Part1.solve_file("example")
+      iex> Part1.solve_file("files/example")
       8
 
   """
