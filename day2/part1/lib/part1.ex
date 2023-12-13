@@ -9,7 +9,7 @@ defmodule Part1 do
   ## Examples
 
       iex> Part1.solve_file("example")
-      0
+      8
 
   """
 
@@ -31,7 +31,7 @@ defmodule Part1 do
     found = Regex.scan(~r/[\d]+ #{color}/, line)
 
     values = Enum.reduce(found, [], fn str, list ->
-      [Enum.at(String.split(Enum.at(str, 0)), 0) | list]
+      [String.to_integer(Enum.at(String.split(Enum.at(str, 0)), 0)) | list]
     end)
 
     Enum.reverse(values)
@@ -47,9 +47,9 @@ defmodule Part1 do
   end
 
   def solve_file(path) do
-    games = read_file(path) |> Enum.reduce([], fn line, acc ->
+    games = Enum.reverse(read_file(path) |> Enum.reduce([], fn line, acc ->
       [create_game(line) | acc]
-    end)
+    end))
 
     0
   end
