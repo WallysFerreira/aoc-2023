@@ -37,9 +37,13 @@ defmodule Part1 do
     Enum.reverse(values)
   end
 
+  def get_id(line) do
+    String.to_integer(Enum.at(String.split(Enum.at(Regex.run(~r/Game [\d]+/, line), 0)), 1))
+  end
+
   def create_game(line) do
     game = %{
-      :id => String.to_integer(String.slice(line, 5..5)),
+      :id => get_id(line),
       :blue => get_values(line, "blue"),
       :red => get_values(line, "red"),
       :green => get_values(line, "green")
