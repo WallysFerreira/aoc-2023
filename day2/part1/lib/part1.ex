@@ -56,5 +56,9 @@ defmodule Part1 do
         Enum.max(game[key]) > @max_qty[key]
       end)
     end)
+
+    possible_games = games -- impossible_games
+
+    possible_games |> Enum.reduce(0, fn game, acc -> acc + game.id end)
   end
 end
