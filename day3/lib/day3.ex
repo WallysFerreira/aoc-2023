@@ -7,12 +7,14 @@ defmodule Day3 do
   Hello world.
 
   ## To-do list
-  - [ ] Create a list with the symbols
+  - [x] Create a list with the symbols
   - [ ] Get starting and ending coordinates of a number
   - [ ] Put all characters around the number into a list
   - [ ] Check if any characters in the list match the symbols and, if so, put the number into a list
   - [ ] Sum all numbers in the list
   """
+
+  @symbols ['#', '$', '*', '+']
 
   def solve_part_1(path) do
   end
