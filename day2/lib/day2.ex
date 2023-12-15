@@ -68,7 +68,21 @@ defmodule Day2 do
     get_all_games(path) -- get_impossible_games(path)
   end
 
+  def get_min_values(game) do
+    %{
+      :blue_min => Enum.max(game.blue),
+      :red_min => Enum.max(game.red),
+      :green_min => Enum.max(game.green),
+    }
+  end
+
   def solve_part_1(path) do
     Enum.reduce(get_possible_games(path), 0, fn game, acc -> acc + game.id end)
+  end
+
+  def solve_part_2(path) do
+    Enum.reduce(get_all_games(path) |> Enum.map(fn game ->
+      Map.values(get_min_values(game)) |> Enum.reduce(fn min_value, acc -> acc * min_value end)
+    end), fn power, sum -> sum + power end)
   end
 end
