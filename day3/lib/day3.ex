@@ -14,7 +14,6 @@ defmodule Day3 do
   - [ ] Sum all numbers in the list
   """
 
-  def hello do
-    :world
+  def solve_part_1(path) do
   end
 end

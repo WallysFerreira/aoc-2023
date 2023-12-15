@@ -2,7 +2,7 @@ defmodule Day3Test do
   use ExUnit.Case
   doctest Day3
 
-  test "greets the world" do
-    assert Day3.hello() == :world
+  test "solves part 1 example file" do
+    assert Day3.solve_part_1("files/example") == 4361
   end
 end
