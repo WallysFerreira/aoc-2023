@@ -1,6 +1,6 @@
-defmodule Part1 do
+defmodule Day2 do
   @moduledoc """
-  Documentation for `Part1`.
+  Documentation for `Day2`.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule Part1 do
 
   ## Examples
 
-      iex> Part1.solve_part_1("files/example")
+      iex> Day2.solve_part_1("files/example")
       8
 
   """
