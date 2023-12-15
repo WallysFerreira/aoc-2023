@@ -16,6 +16,24 @@ defmodule Day3 do
 
   @symbols ['#', '$', '*', '+']
 
+  def read_file(path) do
+    {:ok, contents} = File.read(path)
+    contents |> String.split("\n", trim: true)
+  end
+
+  def get_number(line) do
+    String.split(line, "", trim: true) |> Enum.map(fn char ->
+      case Integer.parse(char) do
+        {num, ""} -> IO.puts(num)
+        :error -> IO.puts("going to next number")
+      end
+
+    end)
+
+    IO.puts("going to next line")
+  end
+
   def solve_part_1(path) do
+    read_file(path) |> Enum.map(&get_number(&1))
   end
 end
