@@ -66,7 +66,9 @@ defmodule Day3 do
 
     end)
 
-    numbers
+    numbers |> Enum.filter(fn number_obj ->
+      String.length(number_obj.value) > 0
+    end)
   end
 
   def get_number(line) do
