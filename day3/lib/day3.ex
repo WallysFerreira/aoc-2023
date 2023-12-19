@@ -33,19 +33,40 @@ defmodule Day3 do
   end
 
   def get_numbers_in_line(line) do
-    {_, numbers_in_line} = filter_and_add_index(line) |> Enum.reduce({-1, ""}, fn number_with_index, acc ->
+    numbers_list = filter_and_add_index(line)
+
+    number_object = %{
+      value: "",
+      line: -1,
+      start_index: -1,
+      end_index: -1,
+    }
+
+    {numbers, _, _, _, _} = numbers_list |> Enum.reduce({[], number_object, -2, "", -1}, fn number_with_index, acc ->
+      {_, length} = List.last(numbers_list)
       {num, idx} = number_with_index
-      {last_index, numbers} = acc
+      {numbers, this_number, last_index, number_value, start_index} = acc
+
+      IO.puts("Current number: #{num}; Current Index: #{idx}; Last index: #{last_index}; First index: #{start_index}")
 
       cond do
         idx != last_index + 1 ->
-          {idx, numbers <> " " <> num}
+          this_number = Map.replace(number_object, :value, number_value)
+          this_number = Map.replace(this_number, :end_index, last_index)
+          this_number = Map.replace(this_number, :start_index, start_index)
+          {[this_number | numbers], number_object, idx, num, idx}
+        idx == length ->
+          this_number = Map.replace(number_object, :value, number_value <> num)
+          this_number = Map.replace(this_number, :end_index, idx)
+          this_number = Map.replace(this_number, :start_index, start_index)
+          {[this_number | numbers], number_object, idx, "", -1}
         true ->
-          {idx, numbers <> num}
+          {numbers, this_number, idx, number_value <> num, start_index}
       end
+
     end)
 
-    String.split(numbers_in_line, " ", trim: true) |> Enum.map(&String.to_integer(&1))
+    numbers
   end
 
   def get_number(line) do
