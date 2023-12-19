@@ -21,16 +21,35 @@ defmodule Day3 do
     contents |> String.split("\n", trim: true)
   end
 
-  def get_number(line) do
-    String.split(line, "", trim: true) |> Enum.map(fn char ->
-      case Integer.parse(char) do
-        {num, ""} -> IO.puts(num)
-        :error -> IO.puts("going to next number")
-      end
+  def filter_and_add_index(line) do
+    Enum.with_index(String.split(line, "", trim: true)) |> Enum.filter(fn char_with_index ->
+      {char, _} = char_with_index
 
+      case Integer.parse(char) do
+        {_num, ""} -> true
+        :error -> false
+      end
+    end)
+  end
+
+  def get_numbers_in_line(line) do
+    {_, numbers_in_line} = filter_and_add_index(line) |> Enum.reduce({-1, ""}, fn number_with_index, acc ->
+      {num, idx} = number_with_index
+      {last_index, numbers} = acc
+
+      cond do
+        idx != last_index + 1 ->
+          {idx, numbers <> " " <> num}
+        true ->
+          {idx, numbers <> num}
+      end
     end)
 
-    IO.puts("going to next line")
+    String.split(numbers_in_line, " ", trim: true) |> Enum.map(&String.to_integer(&1))
+  end
+
+  def get_number(line) do
+    get_numbers_in_line(line)
   end
 
   def solve_part_1(path) do
