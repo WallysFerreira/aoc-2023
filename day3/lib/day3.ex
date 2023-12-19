@@ -8,7 +8,7 @@ defmodule Day3 do
 
   ## To-do list
   - [x] Create a list with the symbols
-  - [ ] Get starting and ending coordinates of a number
+  - [x] Get starting and ending coordinates of a number
   - [ ] Put all characters around the number into a list
   - [ ] Check if any characters in the list match the symbols and, if so, put the number into a list
   - [ ] Sum all numbers in the list
@@ -32,12 +32,13 @@ defmodule Day3 do
     end)
   end
 
-  def get_numbers_in_line(line) do
-    numbers_list = filter_and_add_index(line)
+  def get_number_objects(line) do
+    {contents, line_number} = line
+    numbers_list = filter_and_add_index(contents)
 
     number_object = %{
       value: "",
-      line: -1,
+      line: line_number,
       start_index: -1,
       end_index: -1,
     }
@@ -47,7 +48,7 @@ defmodule Day3 do
       {num, idx} = number_with_index
       {numbers, this_number, last_index, number_value, start_index} = acc
 
-      IO.puts("Current number: #{num}; Current Index: #{idx}; Last index: #{last_index}; First index: #{start_index}")
+      #IO.puts("Current number: #{num}; Current Index: #{idx}; Last index: #{last_index}; First index: #{start_index}")
 
       cond do
         idx != last_index + 1 ->
@@ -72,10 +73,10 @@ defmodule Day3 do
   end
 
   def get_number(line) do
-    get_numbers_in_line(line)
+    get_number_objects(line)
   end
 
   def solve_part_1(path) do
-    read_file(path) |> Enum.map(&get_number(&1))
+    Enum.with_index(read_file(path)) |> Enum.map(&get_number(&1))
   end
 end
