@@ -6,12 +6,19 @@ defmodule Day3 do
   @doc """
   Hello world.
 
-  ## To-do list
+  ## Part 1 to-do list
   - [x] Create a list with the symbols
   - [x] Get starting and ending coordinates of a number
   - [x] Put all characters around the number into a list
   - [x] Check if any characters in the list match the symbols and, if so, put the number into a list
   - [x] Sum all numbers in the list
+
+  ## Part 2 to-do list
+  - [ ] If number is valid append symbol information to number object (which symbol, position)
+  - [ ] Check numbers that have an * symbol making them valid
+  - [ ] Count numbers that are made valid by the same * symbol
+  - [ ] If count is equal to 2, get the product of the two number values
+  - [ ] Sum all products of numbers
   """
 
   def read_file(path) do
