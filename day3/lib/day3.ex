@@ -75,7 +75,7 @@ defmodule Day3 do
     Enum.concat(filtered_numbers)
   end
 
-  def at_line_start?(number_obj, lines) do
+  def at_line_start?(number_obj) do
     number_obj.start_index == 0
   end
 
@@ -93,8 +93,8 @@ defmodule Day3 do
     end
 
     char_indexes = cond do
-      at_line_start?(number_obj, lines) && at_line_end?(number_obj, lines) -> Enum.to_list(number_obj.start_index..number_obj.end_index)
-      at_line_start?(number_obj, lines) -> Enum.to_list(number_obj.start_index..number_obj.end_index + 1)
+      at_line_start?(number_obj) && at_line_end?(number_obj, lines) -> Enum.to_list(number_obj.start_index..number_obj.end_index)
+      at_line_start?(number_obj) -> Enum.to_list(number_obj.start_index..number_obj.end_index + 1)
       at_line_end?(number_obj, lines) -> Enum.to_list(number_obj.start_index - 1..number_obj.end_index)
       true -> Enum.to_list(number_obj.start_index - 1..number_obj.end_index + 1)
     end
@@ -110,7 +110,6 @@ defmodule Day3 do
       chars = String.split(string, "", trim: true)
       Enum.concat(found_chars, [Enum.at(chars, List.first(char_indexes)), Enum.at(chars, List.last(char_indexes))])
     end
-
   end
 
   def solve_part_1(path) do
