@@ -11,7 +11,7 @@ defmodule Day3 do
   - [x] Get starting and ending coordinates of a number
   - [x] Put all characters around the number into a list
   - [x] Check if any characters in the list match the symbols and, if so, put the number into a list
-  - [ ] Sum all numbers in the list
+  - [x] Sum all numbers in the list
   """
 
   @symbols ["#", "$", "*", "+"]
@@ -121,5 +121,9 @@ defmodule Day3 do
     numbers = lines |> get_number_objects()
 
     numbers_next_to_symbols = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
+
+    numbers_next_to_symbols |> Enum.reduce(0, fn number_obj, sum ->
+      sum + String.to_integer(number_obj.value)
+    end)
   end
 end
