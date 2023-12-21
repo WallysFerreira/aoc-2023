@@ -113,11 +113,9 @@ defmodule Day3 do
 
   end
 
-  def get_number(lines) do
-    get_number_objects(lines) |> Enum.map(&get_surroundings(&1, lines))
-  end
-
   def solve_part_1(path) do
-    Enum.with_index(read_file(path)) |> get_number()
+    lines = Enum.with_index(read_file(path))
+    numbers = lines |> get_number_objects()
+    surrounding_chars = numbers |> Enum.map(&get_surroundings(&1, lines))
   end
 end
