@@ -9,7 +9,7 @@ defmodule Day3 do
   ## To-do list
   - [x] Create a list with the symbols
   - [x] Get starting and ending coordinates of a number
-  - [ ] Put all characters around the number into a list
+  - [x] Put all characters around the number into a list
   - [ ] Check if any characters in the list match the symbols and, if so, put the number into a list
   - [ ] Sum all numbers in the list
   """
@@ -75,11 +75,46 @@ defmodule Day3 do
     Enum.concat(filtered_numbers)
   end
 
+  def at_line_start?(number_obj, lines) do
+    number_obj.start_index == 0
+  end
+
+  def at_line_end?(number_obj, lines) do
+    with {string, _} = Enum.at(lines, number_obj.line) do
+      number_obj.end_index == String.length(string) - 1
+    end
+  end
+
   def get_surroundings(number_obj, lines) do
+    lines_indexes = cond do
+      number_obj.line == 0 -> [number_obj.line + 1]
+      number_obj.line == length(lines) - 1 -> [number_obj.line - 1]
+      true -> [number_obj.line - 1, number_obj.line + 1]
+    end
+
+    char_indexes = cond do
+      at_line_start?(number_obj, lines) && at_line_end?(number_obj, lines) -> Enum.to_list(number_obj.start_index..number_obj.end_index)
+      at_line_start?(number_obj, lines) -> Enum.to_list(number_obj.start_index..number_obj.end_index + 1)
+      at_line_end?(number_obj, lines) -> Enum.to_list(number_obj.start_index - 1..number_obj.end_index)
+      true -> Enum.to_list(number_obj.start_index - 1..number_obj.end_index + 1)
+    end
+
+    found_chars = Enum.concat(Enum.map(lines_indexes, fn line_index ->
+      with {string, _} = Enum.at(lines, line_index) do
+        chars = String.split(string, "", trim: true)
+        char_indexes |> Enum.map(&Enum.at(chars, &1))
+      end
+    end))
+
+    with {string, _} = Enum.at(lines, number_obj.line) do
+      chars = String.split(string, "", trim: true)
+      Enum.concat(found_chars, [Enum.at(chars, List.first(char_indexes)), Enum.at(chars, List.last(char_indexes))])
+    end
+
   end
 
   def get_number(lines) do
-    get_number_objects(lines)
+    get_number_objects(lines) |> Enum.map(&get_surroundings(&1, lines))
   end
 
   def solve_part_1(path) do
