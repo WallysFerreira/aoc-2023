@@ -32,51 +32,56 @@ defmodule Day3 do
     end)
   end
 
-  def get_number_objects(line) do
-    {contents, line_number} = line
-    numbers_list = filter_and_add_index(contents)
+  def get_number_objects(lines) do
+    Enum.map(lines, fn line ->
+      {contents, line_number} = line
+      numbers_list = filter_and_add_index(contents)
 
-    number_object = %{
-      value: "",
-      line: line_number,
-      start_index: -1,
-      end_index: -1,
-    }
+      number_object = %{
+        value: "",
+        line: line_number,
+        start_index: -1,
+        end_index: -1,
+      }
 
-    {numbers, _, _, _, _} = numbers_list |> Enum.reduce({[], number_object, -2, "", -1}, fn number_with_index, acc ->
-      {_, length} = List.last(numbers_list)
-      {num, idx} = number_with_index
-      {numbers, this_number, last_index, number_value, start_index} = acc
+      {numbers, _, _, _, _} = numbers_list |> Enum.reduce({[], number_object, -2, "", -1}, fn number_with_index, acc ->
+        {_, length} = List.last(numbers_list)
+        {num, idx} = number_with_index
+        {numbers, this_number, last_index, number_value, start_index} = acc
 
-      #IO.puts("Current number: #{num}; Current Index: #{idx}; Last index: #{last_index}; First index: #{start_index}")
+        #IO.puts("Current number: #{num}; Current Index: #{idx}; Last index: #{last_index}; First index: #{start_index}")
 
-      cond do
-        idx != last_index + 1 ->
-          this_number = Map.replace(number_object, :value, number_value)
-          this_number = Map.replace(this_number, :end_index, last_index)
-          this_number = Map.replace(this_number, :start_index, start_index)
-          {[this_number | numbers], number_object, idx, num, idx}
-        idx == length ->
-          this_number = Map.replace(number_object, :value, number_value <> num)
-          this_number = Map.replace(this_number, :end_index, idx)
-          this_number = Map.replace(this_number, :start_index, start_index)
-          {[this_number | numbers], number_object, idx, "", -1}
-        true ->
-          {numbers, this_number, idx, number_value <> num, start_index}
-      end
+        cond do
+          idx != last_index + 1 ->
+            this_number = Map.replace(number_object, :value, number_value)
+            this_number = Map.replace(this_number, :end_index, last_index)
+            this_number = Map.replace(this_number, :start_index, start_index)
+            {[this_number | numbers], number_object, idx, num, idx}
+          idx == length ->
+            this_number = Map.replace(number_object, :value, number_value <> num)
+            this_number = Map.replace(this_number, :end_index, idx)
+            this_number = Map.replace(this_number, :start_index, start_index)
+            {[this_number | numbers], number_object, idx, "", -1}
+          true ->
+            {numbers, this_number, idx, number_value <> num, start_index}
+        end
 
-    end)
+      end)
 
-    numbers |> Enum.filter(fn number_obj ->
-      String.length(number_obj.value) > 0
+      numbers |> Enum.filter(fn number_obj ->
+        String.length(number_obj.value) > 0
+      end)
     end)
   end
 
-  def get_number(line) do
-    get_number_objects(line)
+  def get_surroundings(number_obj, lines) do
+  end
+
+  def get_number(lines) do
+    get_number_objects(lines)
   end
 
   def solve_part_1(path) do
-    Enum.with_index(read_file(path)) |> Enum.map(&get_number(&1))
+    Enum.with_index(read_file(path)) |> get_number()
   end
 end
