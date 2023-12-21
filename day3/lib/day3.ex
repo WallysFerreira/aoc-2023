@@ -10,7 +10,7 @@ defmodule Day3 do
   - [x] Create a list with the symbols
   - [x] Get starting and ending coordinates of a number
   - [x] Put all characters around the number into a list
-  - [ ] Check if any characters in the list match the symbols and, if so, put the number into a list
+  - [x] Check if any characters in the list match the symbols and, if so, put the number into a list
   - [ ] Sum all numbers in the list
   """
 
@@ -112,15 +112,14 @@ defmodule Day3 do
     end
   end
 
-  def is_next_to_symbol?(surrounding_chars) do
-      surrounding_chars |> Enum.any?(fn char -> Enum.any?(@symbols, fn symbol -> char == symbol end) end)
+  def is_next_to_symbol?(number, lines) do
+      get_surroundings(number, lines) |> Enum.any?(fn char -> Enum.any?(@symbols, fn symbol -> char == symbol end) end)
   end
 
   def solve_part_1(path) do
     lines = Enum.with_index(read_file(path))
     numbers = lines |> get_number_objects()
-    surrounding_chars = numbers |> Enum.map(&get_surroundings(&1, lines))
 
-    surrounding_chars |> Enum.map(&is_next_to_symbol?(&1))
+    numbers_next_to_symbols = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
   end
 end
