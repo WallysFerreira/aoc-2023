@@ -42,22 +42,22 @@ defmodule Day3 do
         end_index: -1,
       }
 
-      {numbers, _, _, _, _} = numbers_list |> Enum.reduce({[], number_object, -2, "", -1}, fn number_with_index, acc ->
+      {numbers, _, _, _} = numbers_list |> Enum.reduce({[], number_object, "", -1}, fn number_with_index, acc ->
         {num, idx} = number_with_index
-        {numbers, this_number, last_index, number_value, start_index} = acc
+        {numbers, this_number, number_value, start_index} = acc
 
         case Enum.find(numbers_list, fn num_tuple ->
           {_, indx} = num_tuple
           indx == idx + 1
         end) do
           {_next_num, _next_index} ->
-            {numbers, this_number, idx, number_value <> num, if start_index == -1 do idx else start_index end}
+            {numbers, this_number, number_value <> num, if start_index == -1 do idx else start_index end}
           nil ->
             this_number = Map.replace(number_object, :value, number_value <> num)
-            this_number = Map.replace(this_number, :end_index, last_index + 1)
-            this_number = Map.replace(this_number, :start_index, start_index)
+            this_number = Map.replace(this_number, :start_index, if start_index == -1 do idx else start_index end)
+            this_number = Map.replace(this_number, :end_index, this_number.start_index + String.length(this_number.value) - 1)
 
-            {[this_number | numbers], number_object, -2, "", -1}
+            {[this_number | numbers], number_object, "", -1}
         end
       end)
 
@@ -120,8 +120,6 @@ defmodule Day3 do
     numbers = lines |> get_number_objects()
 
     numbers_next_to_symbols = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
-
-    numbers_next_to_symbols |> Enum.map(&IO.inspect/1)
 
     numbers_next_to_symbols |> Enum.reduce(0, fn number_obj, sum ->
       sum + String.to_integer(number_obj.value)
