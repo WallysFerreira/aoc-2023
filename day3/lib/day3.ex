@@ -33,7 +33,7 @@ defmodule Day3 do
   end
 
   def get_number_objects(lines) do
-    Enum.map(lines, fn line ->
+    filtered_numbers = Enum.map(lines, fn line ->
       {contents, line_number} = line
       numbers_list = filter_and_add_index(contents)
 
@@ -65,13 +65,14 @@ defmodule Day3 do
           true ->
             {numbers, this_number, idx, number_value <> num, start_index}
         end
-
       end)
 
       numbers |> Enum.filter(fn number_obj ->
         String.length(number_obj.value) > 0
       end)
     end)
+
+    Enum.concat(filtered_numbers)
   end
 
   def get_surroundings(number_obj, lines) do
