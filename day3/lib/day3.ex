@@ -107,7 +107,12 @@ defmodule Day3 do
   end
 
   def is_next_to_symbol?(number, lines) do
-      get_surroundings(number, lines) |> Enum.any?(fn char -> char != "." end)
+      get_surroundings(number, lines) |> Enum.any?(fn char ->
+        case Integer.parse(char) do
+          :error -> char != "."
+          {_num, ""} -> false
+        end
+      end)
   end
 
   def solve_part_1(path) do
@@ -115,6 +120,8 @@ defmodule Day3 do
     numbers = lines |> get_number_objects()
 
     numbers_next_to_symbols = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
+
+    numbers_next_to_symbols |> Enum.map(&IO.inspect/1)
 
     numbers_next_to_symbols |> Enum.reduce(0, fn number_obj, sum ->
       sum + String.to_integer(number_obj.value)
