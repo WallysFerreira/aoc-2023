@@ -14,7 +14,7 @@ defmodule Day3 do
   - [x] Sum all numbers in the list
   """
 
-  @symbols ["#", "$", "*", "+"]
+  #@symbols ["#", "$", "*", "+", "-", "@"]
 
   def read_file(path) do
     {:ok, contents} = File.read(path)
@@ -49,26 +49,31 @@ defmodule Day3 do
         {num, idx} = number_with_index
         {numbers, this_number, last_index, number_value, start_index} = acc
 
-        #IO.puts("Current number: #{num}; Current Index: #{idx}; Last index: #{last_index}; First index: #{start_index}")
+        #IO.puts("Current number: #{num}; Object value: #{number_value}; Current Index: #{idx}; Last index: #{last_index}; First index: #{start_index}")
+        #IO.puts("Current number: #{num}; Is at the end? #{length == idx}")
 
-        cond do
-          idx != last_index + 1 ->
-            this_number = Map.replace(number_object, :value, number_value)
-            this_number = Map.replace(this_number, :end_index, last_index)
-            this_number = Map.replace(this_number, :start_index, start_index)
-            {[this_number | numbers], number_object, idx, num, idx}
-          idx == length ->
+        case Enum.find(numbers_list, fn num_tuple ->
+          {_, indx} = num_tuple
+          indx == idx + 1
+        end) do
+          {numero, indexi} ->
+            #IO.puts("Numero atual: #{num} em #{idx}; proximo numero: #{numero} em #{indexi}")
+            {numbers, this_number, idx, number_value <> num, if start_index == -1 do idx else start_index end}
+          nil ->
+            #IO.puts("Não tem próximo")
             this_number = Map.replace(number_object, :value, number_value <> num)
-            this_number = Map.replace(this_number, :end_index, idx)
+            this_number = Map.replace(this_number, :end_index, last_index + 1)
             this_number = Map.replace(this_number, :start_index, start_index)
-            {[this_number | numbers], number_object, idx, "", -1}
-          true ->
-            {numbers, this_number, idx, number_value <> num, start_index}
+
+            #IO.puts("adicionando")
+            #IO.inspect(this_number)
+            {[this_number | numbers], number_object, -2, "", -1}
         end
       end)
 
       numbers |> Enum.filter(fn number_obj ->
         String.length(number_obj.value) > 0
+        #IO.puts("Number value: #{number_obj.value}; Value length: #{String.length(number_obj.value)}")
       end)
     end)
 
@@ -113,12 +118,20 @@ defmodule Day3 do
   end
 
   def is_next_to_symbol?(number, lines) do
-      get_surroundings(number, lines) |> Enum.any?(fn char -> Enum.any?(@symbols, fn symbol -> char == symbol end) end)
+      #get_surroundings(number, lines) |> Enum.any?(fn char -> Enum.any?(@symbols, fn symbol -> char == symbol end) end)
+      get_surroundings(number, lines) |> Enum.any?(fn char -> char != "." end)
   end
 
   def solve_part_1(path) do
     lines = Enum.with_index(read_file(path))
     numbers = lines |> get_number_objects()
+
+    #numbers |> Enum.map(fn number_obj ->
+    #  IO.puts(number_obj.value)
+    #  if number_obj.value == "1" do
+    #    IO.puts("Starts at: #{number_obj.start_index}; Ends at: #{number_obj.end_index}")
+    #  end
+    #end)
 
     numbers_next_to_symbols = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
 
