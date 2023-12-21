@@ -14,7 +14,7 @@ defmodule Day3 do
   - [ ] Sum all numbers in the list
   """
 
-  @symbols ['#', '$', '*', '+']
+  @symbols ["#", "$", "*", "+"]
 
   def read_file(path) do
     {:ok, contents} = File.read(path)
@@ -112,9 +112,15 @@ defmodule Day3 do
     end
   end
 
+  def is_next_to_symbol?(surrounding_chars) do
+      surrounding_chars |> Enum.any?(fn char -> Enum.any?(@symbols, fn symbol -> char == symbol end) end)
+  end
+
   def solve_part_1(path) do
     lines = Enum.with_index(read_file(path))
     numbers = lines |> get_number_objects()
     surrounding_chars = numbers |> Enum.map(&get_surroundings(&1, lines))
+
+    surrounding_chars |> Enum.map(&is_next_to_symbol?(&1))
   end
 end
