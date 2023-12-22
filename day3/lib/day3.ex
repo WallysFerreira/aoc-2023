@@ -100,36 +100,56 @@ defmodule Day3 do
       true -> Enum.to_list(number_obj.start_index - 1..number_obj.end_index + 1)
     end
 
-    found_chars = Enum.concat(Enum.map(lines_indexes, fn line_index ->
+    found_chars_horizontal = Enum.concat(Enum.map(lines_indexes, fn line_index ->
       with {string, _} = Enum.at(lines, line_index) do
         chars = String.split(string, "", trim: true)
-        char_indexes |> Enum.map(&Enum.at(chars, &1))
+        char_indexes |> Enum.map(fn char_index ->
+          %{
+            value: Enum.at(chars, char_index),
+            line: line_index,
+            index: char_index
+          }
+        end)
       end
     end))
 
-    with {string, _} = Enum.at(lines, number_obj.line) do
+    all_chars_around_number = with {string, _} = Enum.at(lines, number_obj.line) do
       chars = String.split(string, "", trim: true)
-      Enum.concat(found_chars, [Enum.at(chars, List.first(char_indexes)), Enum.at(chars, List.last(char_indexes))])
+      Enum.concat(found_chars_horizontal, [
+        %{
+          value: Enum.at(chars, List.first(char_indexes)),
+          line: number_obj.line,
+          index: List.first(char_indexes),
+        },
+        %{
+          value: Enum.at(chars, List.last(char_indexes)),
+          line: number_obj.line,
+          index: List.last(char_indexes),
+        }])
     end
+
+    symbols_around_number = all_chars_around_number |> Enum.filter(&is_symbol?(&1.value))
+
+    number_obj |> Map.put(:symbols, symbols_around_number)
   end
 
-  def is_next_to_symbol?(number, lines) do
-      get_surroundings(number, lines) |> Enum.any?(fn char ->
-        case Integer.parse(char) do
-          :error -> char != "."
-          {_num, ""} -> false
-        end
-      end)
+  def is_symbol?(char) do
+    case Integer.parse(char) do
+      :error -> char != "."
+      {_num, ""} -> false
+    end
   end
 
   def solve_part_1(path) do
     lines = Enum.with_index(read_file(path))
     numbers = lines |> get_number_objects()
 
-    numbers_next_to_symbols = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
+    numbers |> Enum.map(&get_surroundings(&1, lines))
 
-    numbers_next_to_symbols |> Enum.reduce(0, fn number_obj, sum ->
-      sum + String.to_integer(number_obj.value)
-    end)
+    #valid_numbers = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
+
+    #valid_numbers |> Enum.reduce(0, fn number_obj, sum ->
+    #  sum + String.to_integer(number_obj.value)
+    #end)
   end
 end
