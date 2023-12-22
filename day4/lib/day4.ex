@@ -27,7 +27,7 @@ defmodule Day4 do
   Each matching number on a card gives one copy (instance) of the next cards.
 
   ## Part 2 to-do list
-  - [ ] Add field instances to card object, starting with 1 (the original card)
+  - [x] Add field instances to card object, starting with 1 (the original card)
   - [ ] Propagate each match on a card object to the adding one instance to the subsequent cards on the list
   - [ ] Sum instances of all cards
   """
@@ -60,7 +60,8 @@ defmodule Day4 do
       list: card_list,
       matches: [],
       number_of_matches: nil,
-      points: nil
+      points: nil,
+      instances: 1,
     }
   end
 
