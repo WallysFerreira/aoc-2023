@@ -81,5 +81,7 @@ defmodule Day4 do
       cards
       |> Enum.map(&calculate_points/1)
 
+
+    Enum.reduce(cards, 0, fn card_object, points_sum -> points_sum + card_object.points end)
   end
 end
