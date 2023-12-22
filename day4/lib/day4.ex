@@ -14,7 +14,7 @@ defmodule Day4 do
   ## Part 1 to-do list
   - [x] Split winning numbers list and card numbers list
   - [x] Count how many numbers appear in both lists
-  - [ ] Use the formula to calculate amount of points in the card
+  - [x] Use the formula to calculate amount of points in the card
   - [ ] Sum points in all cards
   """
 
@@ -59,6 +59,13 @@ defmodule Day4 do
     Map.replace(card_object, :number_of_matches, length(card_object.matches))
   end
 
+  def calculate_points(card_object) do
+    Map.replace(card_object, :points, cond do
+      card_object.number_of_matches == 0 -> 0
+      true -> Integer.pow(2, card_object.number_of_matches - 1)
+    end)
+  end
+
   def solve_part_1(path) do
     lists = read_file(path) |> Enum.map(&split_lists/1)
 
@@ -68,6 +75,11 @@ defmodule Day4 do
 
     cards =
       cards
-      |> Enum.map(&get_matches(&1))
+      |> Enum.map(&get_matches/1)
+
+    cards =
+      cards
+      |> Enum.map(&calculate_points/1)
+
   end
 end
