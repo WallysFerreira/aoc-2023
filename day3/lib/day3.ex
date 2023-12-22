@@ -73,7 +73,7 @@ defmodule Day3 do
       end)
     end)
 
-    Enum.concat(filtered_numbers)
+    Enum.concat(filtered_numbers) |> Enum.map(&get_surroundings(&1, lines))
   end
 
   def at_line_start?(number_obj) do
@@ -140,16 +140,18 @@ defmodule Day3 do
     end
   end
 
+  def is_valid?(number_obj) do
+    !Enum.empty?(number_obj.symbols)
+  end
+
   def solve_part_1(path) do
     lines = Enum.with_index(read_file(path))
     numbers = lines |> get_number_objects()
 
-    numbers |> Enum.map(&get_surroundings(&1, lines))
+    valid_numbers = Enum.filter(numbers, &is_valid?(&1))
 
-    #valid_numbers = Enum.filter(numbers, fn number -> is_next_to_symbol?(number, lines) end)
-
-    #valid_numbers |> Enum.reduce(0, fn number_obj, sum ->
-    #  sum + String.to_integer(number_obj.value)
-    #end)
+    valid_numbers |> Enum.reduce(0, fn number_obj, sum ->
+      sum + String.to_integer(number_obj.value)
+    end)
   end
 end
