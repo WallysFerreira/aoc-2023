@@ -5,7 +5,9 @@ defmodule Day4 do
 
   @doc """
 
-  # General info
+  # Part 1
+
+  ## Info for part 1
   The numbers before the "|" character is the list of winning numbers, the numbers after the character is the list of card numbers.
   Scoring is based on the number of matches between the lists.
   To calculate the total of points in a card use the formula 2^(x - 1), where x is the number of matches.
@@ -16,6 +18,18 @@ defmodule Day4 do
   - [x] Count how many numbers appear in both lists
   - [x] Use the formula to calculate amount of points in the card
   - [x] Sum points in all cards
+
+
+  # Part 2
+
+  ## Info for part 2
+  Cards have instances.
+  Each matching number on a card gives one copy (instance) of the next cards.
+
+  ## Part 2 to-do list
+  - [ ] Add field instances to card object, starting with 1 (the original card)
+  - [ ] Propagate each match on a card object to the adding one instance to the subsequent cards on the list
+  - [ ] Sum instances of all cards
   """
 
   def read_file(path) do
