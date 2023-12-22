@@ -14,11 +14,11 @@ defmodule Day3 do
   - [x] Sum all numbers in the list
 
   ## Part 2 to-do list
-  - [ ] If number is valid append symbol information to number object (which symbol, position)
-  - [ ] Check numbers that have an * symbol making them valid
-  - [ ] Count numbers that are made valid by the same * symbol
-  - [ ] If count is equal to 2, get the product of the two number values
-  - [ ] Sum all products of numbers
+  - [x] If number is valid append symbol information to number object (which symbol, position)
+  - [x] Check numbers that have an * symbol making them valid
+  - [x] Count numbers that are made valid by the same * symbol
+  - [x] If count is equal to 2, get the product of the two number values
+  - [x] Sum all products of numbers
   """
 
   def read_file(path) do
@@ -107,7 +107,7 @@ defmodule Day3 do
           %{
             value: Enum.at(chars, char_index),
             line: line_index,
-            index: char_index
+            index: char_index,
           }
         end)
       end
@@ -153,5 +153,34 @@ defmodule Day3 do
     valid_numbers |> Enum.reduce(0, fn number_obj, sum ->
       sum + String.to_integer(number_obj.value)
     end)
+  end
+
+  def get_valid_gears(numbers) do
+    numbers_with_asterisk = Enum.filter(numbers, fn number_obj ->
+      Enum.at(number_obj.symbols, 0).value == "*"
+    end)
+
+    numbers_with_same_asterisk = numbers_with_asterisk |> Enum.chunk_by(fn number_obj ->
+      {Enum.at(number_obj.symbols, 0).index, Enum.at(number_obj.symbols, 0).line}
+    end)
+
+    numbers_with_same_asterisk |> Enum.filter(&length(&1) == 2)
+  end
+
+  def get_gear_ratio(numbers) do
+    String.to_integer(Enum.at(numbers, 0).value) * String.to_integer(Enum.at(numbers, 1).value)
+  end
+
+  def solve_part_2(path) do
+    lines = Enum.with_index(read_file(path))
+    numbers = lines |> get_number_objects()
+    valid_numbers = Enum.filter(numbers, &is_valid?/1)
+    valid_numbers = valid_numbers |> Enum.sort_by(&{Enum.at(&1.symbols, 0).line, Enum.at(&1.symbols, 0).index})
+
+    valid_gears = get_valid_gears(valid_numbers)
+
+    gear_ratios = valid_gears |> Enum.map(&get_gear_ratio/1)
+
+    Enum.sum(gear_ratios)
   end
 end
