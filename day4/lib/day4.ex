@@ -38,19 +38,36 @@ defmodule Day4 do
     end
   end
 
-  def get_matches(lists_tuple) do
+  def create_card_object(lists_tuple) do
     {winning_list, card_list} = lists_tuple
 
-    card_list
+    %{
+      winning_list: winning_list,
+      list: card_list,
+      matches: [],
+      number_of_matches: nil,
+      points: nil
+    }
+  end
+
+  def get_matches(card_object) do
+    card_object = Map.replace(card_object, :matches, card_object.list
     |> Enum.filter(fn card_number ->
-      Enum.any?(winning_list, fn x -> x == card_number end)
-    end)
+      Enum.any?(card_object.winning_list, fn x -> x == card_number end)
+    end))
+
+    Map.replace(card_object, :number_of_matches, length(card_object.matches))
   end
 
   def solve_part_1(path) do
     lists = read_file(path) |> Enum.map(&split_lists/1)
 
-    number_of_matches = lists
-    |> Enum.map(&length(get_matches(&1)))
+    cards =
+      lists
+      |> Enum.map(&create_card_object/1)
+
+    cards =
+      cards
+      |> Enum.map(&get_matches(&1))
   end
 end
