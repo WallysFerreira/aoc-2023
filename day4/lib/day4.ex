@@ -24,7 +24,7 @@ defmodule Day4 do
   end
 
   def split_lists(line) do
-    clean_line = Regex.replace(~r/Card [\d]+: /, line, "")
+    clean_line = Regex.replace(~r/Card[\s]+[\d]+: /, line, "")
 
     with lists_as_string = clean_line |> String.split(" | ", trim: true) do
       lists =
@@ -80,7 +80,6 @@ defmodule Day4 do
     cards =
       cards
       |> Enum.map(&calculate_points/1)
-
 
     Enum.reduce(cards, 0, fn card_object, points_sum -> points_sum + card_object.points end)
   end
