@@ -13,7 +13,7 @@ defmodule Day4 do
 
   ## Part 1 to-do list
   - [x] Split winning numbers list and card numbers list
-  - [ ] Count how many numbers appear in both lists
+  - [x] Count how many numbers appear in both lists
   - [ ] Use the formula to calculate amount of points in the card
   - [ ] Sum points in all cards
   """
@@ -38,7 +38,19 @@ defmodule Day4 do
     end
   end
 
+  def get_matches(lists_tuple) do
+    {winning_list, card_list} = lists_tuple
+
+    card_list
+    |> Enum.filter(fn card_number ->
+      Enum.any?(winning_list, fn x -> x == card_number end)
+    end)
+  end
+
   def solve_part_1(path) do
-    read_file(path) |> Enum.map(&split_lists/1)
+    lists = read_file(path) |> Enum.map(&split_lists/1)
+
+    number_of_matches = lists
+    |> Enum.map(&length(get_matches(&1)))
   end
 end
