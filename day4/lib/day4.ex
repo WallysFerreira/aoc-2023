@@ -15,7 +15,7 @@ defmodule Day4 do
   - [x] Split winning numbers list and card numbers list
   - [x] Count how many numbers appear in both lists
   - [x] Use the formula to calculate amount of points in the card
-  - [ ] Sum points in all cards
+  - [x] Sum points in all cards
   """
 
   def read_file(path) do
