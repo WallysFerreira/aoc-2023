@@ -1,0 +1,14 @@
+{
+    "name": "Setup elixir",
+    "image":  "hub.docker.com/_/elixir",
+    "features": {},
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscodevim.vim",
+                "jakebecker.elixir-ls"
+            ]
+        }
+    }
+}
