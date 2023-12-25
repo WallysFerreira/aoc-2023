@@ -16,6 +16,11 @@ In the future it may be necessary to do conversions with a later source category
 
 ## Steps details
 
+### Extract info from file
+Split on each empty line to separate maps and seeds. Split on each break line inside the previously splitted lines to get each map instruction and seed number row. Then split each seed number row on whitespace to get the individual seed numbers, and each map row on whitespace to get the information about ranges.
+
+It's ok to assume an order for the maps in the file because it doesn't change.
+
 ### Deciding how many times to convert
 Using a list with the categories names, take the distance between the source and destination category, that will determine how many times to run the algorithm the get the destination number, using the return from the function as the input next time the algorithm is ran.
 
