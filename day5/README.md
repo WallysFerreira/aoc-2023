@@ -1,21 +1,91 @@
-# Day5
+# Part 1
 
-**TODO: Add description**
+There are multiple categories (Seed, Soil, Fertilizer, Water, Light, Temperature, Humidity, Location) and we have a map that describes how to convert one category to the immediate next category. 
 
-## Installation
+A seed number is given and a location number is expected (end-to-end), but in the future it may be necessary to do this with a later source category and/or an earlier destination category.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `day5` to your list of dependencies in `mix.exs`:
 
-```elixir
-def deps do
-  [
-    {:day5, "~> 0.1.0"}
-  ]
-end
+### Steps
+- Extract seeds and maps from file and store in an object
+- Decide how many times to convert based on source and destination categories
+- Get destination number
+
+## Steps details
+
+### Deciding how many times to convert
+Using a list with the categories names, take the distance between the source and destination category, that will determine how many times to run the algorithm the get the destination number, using the return from the function as the input next time the algorithm is ran.
+
+Something like
+
+```
+int getDestination(source, sourceCategory, destCategory) {
+    categoriesList = ["seed", "fertilizer", ..., "temperature", "location"]
+    distance = categoriesList.find(destCategory) - categoriesList.find(sourceCategory)
+    destNumber = source
+    
+    for (i = 0; i <= distance; i++) {
+        destNumber = getDestinationNumber(destNumber)
+    }
+    
+    return destNumber
+}
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/day5>.
 
+### Getting the destination number
+
+Given the source number and the source and destination  ranges return the destination number. Could do it with or without lists
+
+#### Without lists 
+
+Object stores destination range start, source range start and range length.
+
+##### Algorithm
+
+- Check if ***source*** is between ***source range start*** and ***source range start*** plus ***range length*** of any of both lists
+    - If so, calculate ***destination range start*** plus ***source*** minus ***source range start***
+    - If not, return the source
+
+Something like
+```
+int getDestinationNumber(source, sourceRangeStart, destRangeStart, rangeLength) {
+    if (source > sourceRangeStart &&
+        source < sourceRangeStart + rangeLength)
+        return destRangeStart + source - sourceRangeStart
+
+    return source
+}
+```
+
+##### Pros
+- Probably faster
+- Smaller Object (irrelevant)
+
+##### Cons
+- Algorithm is harder to understand
+
+#### With lists
+
+Object stores two lists for each line on the map, one with the numbers on the source range and the other with the numbers on the destination range. 
+
+##### Algorithm
+- Check if any of the source range lists contains source.
+    - If so, get the element at the same position in the destination range list
+    - If not, return the source
+
+Something like
+```
+int getDestinationNumber(source, sourceList, destinationList) {
+    index = sourceList.find(source)
+    
+    if (index > -1) return destinationList[index]
+    
+    return source
+}
+```
+
+##### Pros
+- Code is smaller and easier to understand
+
+##### Cons
+- More effort to expand ranges as lists in the Object
