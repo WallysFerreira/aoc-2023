@@ -1,14 +1,18 @@
 # Part 1
 
-There are multiple categories (Seed, Soil, Fertilizer, Water, Light, Temperature, Humidity, Location) and we have a map that describes how to convert one category to the immediate next category. 
+There are multiple categories (Seed, Soil, Fertilizer, Water, Light, Temperature, Humidity, Location) and we have a map that describes how to convert one category to the immediate next category.
 
-A seed number is given and a location number is expected (end-to-end), but in the future it may be necessary to do this with a later source category and/or an earlier destination category.
+## Objective
+A list of seed numbers is given and the lowest location number is expected (end-to-end).
+
+In the future it may be necessary to do conversions with a later source category and/or an earlier destination category.
 
 
-### Steps
+## Steps
 - Extract seeds and maps from file and store in an object
 - Decide how many times to convert based on source and destination categories
-- Get destination number
+- Get destination number for each seed and store in a list
+- Return the lowest number in the list
 
 ## Steps details
 
