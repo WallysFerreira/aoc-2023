@@ -51,14 +51,37 @@ defmodule Day5 do
     end)
   end
 
-  def get_number_of_conversions(source_category, dest_category) do
-    categories = ["seed", "soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
+  def get_destination_number(source_number, maps) do
+    maps
+    |> Enum.reduce_while(source_number, fn map, acc ->
+      {dest_range_start, source_range_start, range_length} = map
 
-    Enum.find_index(categories, &(&1 == dest_category)) - Enum.find_index(categories, &(&1 == source_category))
+      if acc >= source_range_start &&
+        acc <= source_range_start + range_length do
+        {:halt, dest_range_start + acc - source_range_start}
+      else
+        {:cont, acc}
+      end
+    end)
   end
 
   def get_destination(almanac, source_category, dest_category) do
-    conversion_amount = get_number_of_conversions(source_category, dest_category)
+    categories = ["soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
+
+    Enum.map(almanac.seeds, fn seed ->
+      Enum.reduce_while(categories, seed, fn category, dest_number ->
+        current_map = Map.get(almanac, String.to_atom("to_#{category}"))
+        IO.inspect(category)
+        IO.inspect(get_destination_number(dest_number, current_map))
+        dest_number = get_destination_number(dest_number, current_map)
+
+        if category == dest_category do
+          {:halt, dest_number}
+        else
+          {:cont, dest_number}
+        end
+      end)
+    end)
   end
 
   def solve_part_1(path) do
