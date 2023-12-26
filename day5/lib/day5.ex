@@ -4,11 +4,11 @@ defmodule Day5 do
     String.split(contents, "\n\n", trim: true)
   end
 
-  def create_objects(sections) do
+  def create_almanac(sections) do
     almanac_object = %{
       seeds: nil,
       to_soil: nil,
-      to_fertilizer: 32,
+      to_fertilizer: nil,
       to_water: nil,
       to_light: nil,
       to_temperature: nil,
@@ -53,6 +53,6 @@ defmodule Day5 do
 
   def solve_part_1(path) do
     read_file(path)
-    |> create_objects()
+    |> create_almanac()
   end
 end
