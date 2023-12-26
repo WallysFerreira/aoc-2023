@@ -51,8 +51,22 @@ defmodule Day5 do
     end)
   end
 
+  def get_number_of_conversions(source_category, dest_category) do
+    categories = ["seed", "soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
+
+    Enum.find_index(categories, &(&1 == dest_category)) - Enum.find_index(categories, &(&1 == source_category))
+  end
+
+  def get_destination(almanac, source_category, dest_category) do
+    conversion_amount = get_number_of_conversions(source_category, dest_category)
+  end
+
   def solve_part_1(path) do
-    read_file(path)
-    |> create_almanac()
+    almanac =
+      read_file(path)
+      |> create_almanac()
+
+    almanac
+    |> get_destination("seed", "location")
   end
 end
