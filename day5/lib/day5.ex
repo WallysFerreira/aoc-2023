@@ -7,6 +7,8 @@ defmodule Day5 do
   def create_almanac(sections) do
     almanac_object = %{
       seed_numbers: nil,
+      seed_range_start: [],
+      seed_range_length: [],
       to_soil: nil,
       to_fertilizer: nil,
       to_water: nil,
@@ -82,6 +84,15 @@ defmodule Day5 do
     end)
   end
 
+  def extract_seed_range_info(almanac) do
+    Enum.chunk_every(almanac.seed_numbers, 2)
+    |> Enum.reduce(almanac, fn range_pair, updated_almanac ->
+      updated_almanac = Map.put(updated_almanac, :seed_range_start, [Enum.at(range_pair, 0) | updated_almanac.seed_range_start])
+      Map.put(updated_almanac, :seed_range_length, [Enum.at(range_pair, 1) | updated_almanac.seed_range_length])
+    end)
+
+  end
+
   def solve_part_1(path) do
     almanac =
       read_file(path)
@@ -91,5 +102,13 @@ defmodule Day5 do
     |> get_destination("location", almanac.seed_numbers)
 
     Enum.min(locations_of_seeds)
+  end
+
+  def solve_part_2(path) do
+    almanac =
+      read_file(path)
+      |> create_almanac()
+
+    extract_seed_range_info(almanac)
   end
 end
