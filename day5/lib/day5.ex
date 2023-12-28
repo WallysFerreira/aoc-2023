@@ -89,5 +89,7 @@ defmodule Day5 do
 
     locations_of_seeds = almanac
     |> get_destination("location")
+
+    Enum.min(locations_of_seeds)
   end
 end
