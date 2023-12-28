@@ -98,3 +98,11 @@ int getDestinationNumber(source, sourceList, destinationList) {
 
 ##### Cons
 - More effort to expand ranges as lists in the Object
+
+# Part 2
+
+Numbers in the seeds section actually describe a range of seed numbers. They come in pairs and the first value is the start of the range and the second value is the length of the range.
+
+## Objective
+
+Get the lowest location number out of the entire range of seeds
