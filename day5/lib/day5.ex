@@ -17,7 +17,7 @@ defmodule Day5 do
       to_location: nil,
     }
 
-    Enum.with_index(sections)
+    almanac = Enum.with_index(sections)
     |> Enum.reduce(almanac_object, fn section_tuple, updated_almanac ->
       {section, index} = section_tuple
 
@@ -50,6 +50,8 @@ defmodule Day5 do
         Map.replace(updated_almanac, section_name, maps)
       end
     end)
+
+    extract_seed_range_info(almanac)
   end
 
   def get_destination_number(source_number, maps) do
@@ -107,6 +109,16 @@ defmodule Day5 do
       read_file(path)
       |> create_almanac()
 
-    extract_seed_range_info(almanac)
+    IO.inspect(almanac, charlists: :as_lists)
+
+    locations = List.flatten(almanac.seed_ranges
+    |> Enum.reduce([], fn range_tuple, locations ->
+      {range_start, range_length} = range_tuple
+      [get_destination(almanac, "location", range_start..(range_length + range_start)) | locations]
+    end))
+
+    IO.inspect(locations, charlists: :as_lists)
+
+    Enum.min(locations)
   end
 end
