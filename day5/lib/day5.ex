@@ -6,7 +6,7 @@ defmodule Day5 do
 
   def create_almanac(sections) do
     almanac_object = %{
-      seeds: nil,
+      seed_numbers: nil,
       to_soil: nil,
       to_fertilizer: nil,
       to_water: nil,
@@ -26,7 +26,7 @@ defmodule Day5 do
           String.to_integer(Enum.at(seed_number_list, 0))
         end)
 
-        Map.replace(updated_almanac, :seeds, seed_numbers)
+        Map.replace(updated_almanac, :seed_numbers, seed_numbers)
       else
         section_name = Enum.at(Enum.at(Regex.scan(~r/to-[\w]+/, section), 0), 0)
         section_name = section_name
@@ -68,7 +68,7 @@ defmodule Day5 do
   def get_destination(almanac, dest_category) do
     categories = ["soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
 
-    Enum.map(almanac.seeds, fn seed ->
+    Enum.map(almanac.seed_numbers, fn seed ->
       Enum.reduce_while(categories, seed, fn category, dest_number ->
         current_map = Map.get(almanac, String.to_atom("to_#{category}"))
         dest_number = get_destination_number(dest_number, current_map)
