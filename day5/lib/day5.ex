@@ -65,10 +65,10 @@ defmodule Day5 do
     end)
   end
 
-  def get_destination(almanac, dest_category) do
+  def get_destination(almanac, dest_category, seeds) do
     categories = ["soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
 
-    Enum.map(almanac.seed_numbers, fn seed ->
+    Enum.map(seeds, fn seed ->
       Enum.reduce_while(categories, seed, fn category, dest_number ->
         current_map = Map.get(almanac, String.to_atom("to_#{category}"))
         dest_number = get_destination_number(dest_number, current_map)
@@ -88,7 +88,7 @@ defmodule Day5 do
       |> create_almanac()
 
     locations_of_seeds = almanac
-    |> get_destination("location")
+    |> get_destination("location", almanac.seed_numbers)
 
     Enum.min(locations_of_seeds)
   end
