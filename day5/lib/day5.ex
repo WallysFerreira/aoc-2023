@@ -141,6 +141,13 @@ defmodule Day5 do
       read_file(path)
       |> create_almanac()
 
-    Enum.min(List.flatten(get_destination(almanac, "location", almanac.seed_ranges, "tuple")))
+    #get_destination(almanac, "location", almanac.seed_ranges, "tuple")
+
+    {first_half, second_half} = Enum.split(almanac.seed_ranges, Integer.floor_div(length(almanac.seed_ranges), 2))
+
+    #Enum.min(List.flatten([first_half, second_half]
+    Enum.min(List.flatten(Enum.chunk_every(almanac.seed_ranges, 2)
+    |> Stream.map(&Task.async(Day5, :get_destination, [almanac, "location", &1, "tuple"]))
+    |> Enum.map(&Task.await(&1, :infinity))))
   end
 end
