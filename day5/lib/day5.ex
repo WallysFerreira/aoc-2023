@@ -71,7 +71,7 @@ defmodule Day5 do
   def get_destination(almanac, dest_category, seeds) do
     categories = ["soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
 
-    Enum.map(seeds, fn seed ->
+    Stream.map(seeds, fn seed ->
       Enum.reduce_while(categories, seed, fn category, dest_number ->
         current_map = Map.get(almanac, String.to_atom("to_#{category}"))
         dest_number = get_destination_number(dest_number, current_map)
@@ -83,6 +83,38 @@ defmodule Day5 do
         end
       end)
     end)
+  end
+
+  def get_destination(almanac, dest_category, seeds, _type) do
+    categories = ["soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
+
+    {_, locations} = Enum.unzip(seeds
+    |> Enum.map(fn range_tuple ->
+      {range_start, range_length} = range_tuple
+
+      Enum.reduce_while(Stream.iterate(1, &(&1 + 1)), {range_start, []}, fn _, acc ->
+        {current_seed, locations} = acc
+
+        locations = [Enum.reduce_while(categories, current_seed, fn category, dest_number ->
+          current_map = Map.get(almanac, String.to_atom("to_#{category}"))
+          dest_number = get_destination_number(dest_number, current_map)
+
+          if category == dest_category do
+            {:halt, dest_number}
+          else
+            {:cont, dest_number}
+          end
+        end) | locations]
+
+        if current_seed == range_start + range_length do
+          {:halt, {current_seed, locations}}
+        else
+          {:cont, {current_seed + 1, locations}}
+        end
+      end)
+    end))
+
+    locations
   end
 
   def extract_seed_range_info(almanac) do
@@ -109,16 +141,6 @@ defmodule Day5 do
       read_file(path)
       |> create_almanac()
 
-    IO.inspect(almanac, charlists: :as_lists)
-
-    locations = List.flatten(almanac.seed_ranges
-    |> Enum.reduce([], fn range_tuple, locations ->
-      {range_start, range_length} = range_tuple
-      [get_destination(almanac, "location", range_start..(range_length + range_start)) | locations]
-    end))
-
-    IO.inspect(locations, charlists: :as_lists)
-
-    Enum.min(locations)
+    Enum.min(List.flatten(get_destination(almanac, "location", almanac.seed_ranges, "tuple")))
   end
 end
