@@ -10,15 +10,15 @@ defmodule Day6Test do
     test "gets races info" do
       assert Day6.get_races(Day6.read_file("files/example")) == [
         %{
-          time: 7,
+          duration: 7,
           distance: 9,
         },
         %{
-          time: 15,
+          duration: 15,
           distance: 40,
         },
         %{
-          time: 30,
+          duration: 30,
           distance: 200,
         },
       ]
