@@ -32,6 +32,10 @@ defmodule Day6 do
     end)
   end
 
+  def calculate_distance_travelled(race_duration, time_holding_button) do
+    (race_duration - time_holding_button) * time_holding_button
+  end
+
   def solve_part_1(path) do
   end
 end
