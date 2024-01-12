@@ -41,6 +41,12 @@ defmodule Day6 do
     |> Enum.filter(&(calculate_distance_travelled(race.duration, &1) > race.distance))
   end
 
+  def get_total_winning_options(races) do
+    Enum.map(races, &get_winning_options/1)
+    |> Enum.map(&length/1)
+    |> Enum.product()
+  end
+
   def solve_part_1(path) do
     races =
       read_file(path)
