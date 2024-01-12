@@ -27,19 +27,19 @@ defmodule Day6Test do
 
   describe "calculates distance travelled" do
     test "in 7 milliseconds holding button for 0 milliseconds" do
-      assert Day6.calculate_distance(7, 0) == 0
+      assert Day6.calculate_distance_travelled(7, 0) == 0
     end
 
     test "in 7 milliseconds holding button for 3 milliseconds" do
-      assert Day6.calculate_distance(7, 3) == 12
+      assert Day6.calculate_distance_travelled(7, 3) == 12
     end
 
     test "in 7 milliseconds holding button for 4 milliseconds" do
-      assert Day6.calculate_distance(7, 4) == 12
+      assert Day6.calculate_distance_travelled(7, 4) == 12
     end
 
     test "in 40 milliseconds holding button for 30 milliseconds" do
-      assert Day6.calculate_distance(40, 30) == 300
+      assert Day6.calculate_distance_travelled(40, 30) == 300
     end
   end
 end
