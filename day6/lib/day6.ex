@@ -18,15 +18,15 @@ defmodule Day6 do
   end
 
   def get_races(lines) do
-    times = extract_numbers(Enum.at(lines, 0), true)
+    durations = extract_numbers(Enum.at(lines, 0), true)
     distances = extract_numbers(Enum.at(lines, 1))
 
-    times
-    |> Enum.map(fn time_tuple ->
-      {time, idx} = time_tuple
+    durations
+    |> Enum.map(fn duration_tuple ->
+      {duration, idx} = duration_tuple
 
       %{
-        time: time,
+        duration: duration,
         distance: Enum.at(distances, idx)
       }
     end)
@@ -36,6 +36,14 @@ defmodule Day6 do
     (race_duration - time_holding_button) * time_holding_button
   end
 
+  def get_winning_options(race) do
+    1..(race.duration - 1)
+    |> Enum.filter(&(calculate_distance_travelled(race.duration, &1) > race.distance))
+  end
+
   def solve_part_1(path) do
+    races =
+      read_file(path)
+      |> get_races()
   end
 end
