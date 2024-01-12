@@ -4,10 +4,6 @@ defmodule Day6Test do
 
   @example_path "files/example"
 
-  test "solves example file" do
-    assert Day6.solve_part_1(@example_path) == 288
-  end
-
   test "gets races info" do
     assert Day6.get_races(Day6.read_file(@example_path)) == [
              %{
@@ -51,5 +47,13 @@ defmodule Day6Test do
     assert Day6.get_winning_options(Enum.at(races, 0)) == [2, 3, 4, 5]
     assert Day6.get_winning_options(Enum.at(races, 1)) == [4, 5, 6, 7, 8, 9, 10, 11]
     assert Day6.get_winning_options(Enum.at(races, 2)) == [11, 12, 13, 14, 15, 16, 17, 18, 19]
+  end
+
+  test "calculates total number of winning options" do
+    races =
+      Day6.read_file(@example_path)
+      |> Day6.get_races()
+
+    assert Day6.get_total_winning_options(races) == 288
   end
 end
