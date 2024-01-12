@@ -2,27 +2,27 @@ defmodule Day6Test do
   use ExUnit.Case
   doctest Day6
 
-  describe "part 1" do
-    test "solves example file" do
-      assert Day6.solve_part_1("files/example") == 288
-    end
+  @example_path "files/example"
 
-    test "gets races info" do
-      assert Day6.get_races(Day6.read_file("files/example")) == [
-        %{
-          duration: 7,
-          distance: 9,
-        },
-        %{
-          duration: 15,
-          distance: 40,
-        },
-        %{
-          duration: 30,
-          distance: 200,
-        },
-      ]
-    end
+  test "solves example file" do
+    assert Day6.solve_part_1(@example_path) == 288
+  end
+
+  test "gets races info" do
+    assert Day6.get_races(Day6.read_file(@example_path)) == [
+             %{
+               duration: 7,
+               distance: 9
+             },
+             %{
+               duration: 15,
+               distance: 40
+             },
+             %{
+               duration: 30,
+               distance: 200
+             }
+           ]
   end
 
   describe "calculates distance travelled" do
@@ -41,5 +41,15 @@ defmodule Day6Test do
     test "in 40 milliseconds holding button for 30 milliseconds" do
       assert Day6.calculate_distance_travelled(40, 30) == 300
     end
+  end
+
+  test "gets winning options" do
+    races =
+      Day6.read_file(@example_path)
+      |> Day6.get_races()
+
+    assert Day6.get_winning_options(Enum.at(races, 0)) == [2, 3, 4, 5]
+    assert Day6.get_winning_options(Enum.at(races, 1)) == [4, 5, 6, 7, 8, 9, 10, 11]
+    assert Day6.get_winning_options(Enum.at(races, 2)) == [11, 12, 13, 14, 15, 16, 17, 18, 19]
   end
 end
