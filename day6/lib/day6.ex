@@ -17,7 +17,9 @@ defmodule Day6 do
     end
   end
 
-  def get_races(lines) do
+  def get_races(path) do
+    lines = read_file(path)
+
     durations = extract_numbers(Enum.at(lines, 0), true)
     distances = extract_numbers(Enum.at(lines, 1))
 
@@ -45,11 +47,5 @@ defmodule Day6 do
     Enum.map(races, &get_winning_options/1)
     |> Enum.map(&length/1)
     |> Enum.product()
-  end
-
-  def solve_part_1(path) do
-    races =
-      read_file(path)
-      |> get_races()
   end
 end
