@@ -1,4 +1,4 @@
-defmodule Day6 do
+defmodule Day6Part1 do
   def read_file(path) do
     {:ok, contents} = File.read(path)
     String.split(contents, "\n", trim: true)
