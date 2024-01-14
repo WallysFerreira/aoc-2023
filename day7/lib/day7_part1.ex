@@ -65,7 +65,7 @@ defmodule Day7Part1 do
   end
 
   def rank_hands(hands) do
-    Enum.reduce(0..4, [], fn idx, updated_hands ->
+    Enum.reduce(0..length(hands) - 1, [], fn idx, updated_hands ->
       {current_hand, remaining} = List.pop_at(hands, idx)
 
       rank =
