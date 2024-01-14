@@ -41,9 +41,26 @@ defmodule Day7Part1 do
     end
   end
 
-  def is_stronger?(hand1, hand2) when is_list(hand1) do
+  def compare(hand1, hand2) when is_list(hand1) do
     types_list = ["High card", "One pair", "Two pair", "Three of a kind", "Full house", "Four of a kind", "Five of a kind"]
 
-    Enum.find_index(types_list, &(get_hand_type(hand1) == &1)) > Enum.find_index(types_list, &(get_hand_type(hand2) == &1))
+    hand1_idx = Enum.find_index(types_list, &(get_hand_type(hand1) == &1))
+    hand2_idx = Enum.find_index(types_list, &(get_hand_type(hand2) == &1))
+
+    cond do
+      hand1_idx == hand2_idx ->
+        Enum.reduce_while(0..5, 0, fn idx, _ ->
+          result = compare(Enum.at(hand1, idx), Enum.at(hand2, idx))
+
+          if result != 0 do
+            {:halt, result}
+          else
+            {:cont, result}
+          end
+        end)
+
+      hand1_idx > hand2_idx -> 1
+      hand1_idx < hand2_idx -> 2
+    end
   end
 end
