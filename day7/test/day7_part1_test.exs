@@ -27,4 +27,14 @@ defmodule Day7Part1Test do
       }
     ]
   end
+
+  describe "gets hand type" do
+    test "five of a kind" do assert Day7Part1.get_hand_type(String.split("AAAAA", "", trim: :true)) == "Five of a kind" end
+    test "four of a kind" do assert Day7Part1.get_hand_type(String.split("AA8AA", "", trim: :true)) == "Four of a kind" end
+    test "full house" do assert Day7Part1.get_hand_type(String.split("23332", "", trim: :true)) == "Full house" end
+    test "three of a kind" do assert Day7Part1.get_hand_type(String.split("TTT98", "", trim: :true)) == "Three of a kind" end
+    test "two pair" do assert Day7Part1.get_hand_type(String.split("23432", "", trim: :true)) == "Two pair" end
+    test "one pair" do assert Day7Part1.get_hand_type(String.split("A23A4", "", trim: :true)) == "One pair" end
+    test "high card" do assert Day7Part1.get_hand_type(String.split("23456", "", trim: :true)) == "High card" end
+  end
 end
