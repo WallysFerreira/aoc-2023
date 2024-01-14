@@ -5,26 +5,11 @@ defmodule Day7Part1Test do
 
   test "extracts hand and bid info" do
     assert Day7Part1.get_info(@example_path) == [
-      %{
-        hand: ["3", "2", "T", "3", "K"],
-        bid: 765
-      },
-      %{
-        hand: ["T", "5", "5", "J", "5"],
-        bid: 684
-      },
-      %{
-        hand: ["K", "K", "6", "7", "7"],
-        bid: 28
-      },
-      %{
-        hand: ["K", "T", "J", "J", "T"],
-        bid: 220
-      },
-      %{
-        hand: ["Q", "Q", "Q", "J", "A"],
-        bid: 483
-      }
+      %{hand: ["3", "2", "T", "3", "K"], bid: 765},
+      %{hand: ["T", "5", "5", "J", "5"], bid: 684},
+      %{hand: ["K", "K", "6", "7", "7"], bid: 28},
+      %{hand: ["K", "T", "J", "J", "T"], bid: 220},
+      %{hand: ["Q", "Q", "Q", "J", "A"], bid: 483}
     ]
   end
 
@@ -84,5 +69,17 @@ defmodule Day7Part1Test do
       assert Day7Part1.compare(String.split("QQQJA", "", trim: :true), String.split("T55J5", "", trim: :true)) == 1
       assert Day7Part1.compare(String.split("T55J5", "", trim: :true), String.split("QQQJA", "", trim: :true)) == 2
     end
+  end
+
+  test "ranks hands" do
+    hands = Day7Part1.get_info("files/example")
+
+    assert Day7Part1.rank_hands(hands) == [
+      %{hand: ["3", "2", "T", "3", "K"], bid: 765, rank: 1},
+      %{hand: ["T", "5", "5", "J", "5"], bid: 684, rank: 4},
+      %{hand: ["K", "K", "6", "7", "7"], bid: 28, rank: 3},
+      %{hand: ["K", "T", "J", "J", "T"], bid: 220, rank: 2},
+      %{hand: ["Q", "Q", "Q", "J", "A"], bid: 483, rank: 5}
+    ]
   end
 end

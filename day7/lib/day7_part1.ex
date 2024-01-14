@@ -49,7 +49,7 @@ defmodule Day7Part1 do
 
     cond do
       hand1_idx == hand2_idx ->
-        Enum.reduce_while(0..5, 0, fn idx, _ ->
+        Enum.reduce_while(0..4, 0, fn idx, _ ->
           result = compare(Enum.at(hand1, idx), Enum.at(hand2, idx))
 
           if result != 0 do
@@ -62,5 +62,24 @@ defmodule Day7Part1 do
       hand1_idx > hand2_idx -> 1
       hand1_idx < hand2_idx -> 2
     end
+  end
+
+  def rank_hands(hands) do
+    Enum.reduce(0..4, [], fn idx, updated_hands ->
+      {current_hand, remaining} = List.pop_at(hands, idx)
+
+      rank =
+        remaining
+        |> Enum.reduce(0, fn opposing_hand, count ->
+          if compare(current_hand.hand, opposing_hand.hand) == 1 do
+            count + 1
+          else
+            count
+          end
+        end)
+
+      [Map.put_new(current_hand, :rank, rank + 1) | updated_hands]
+    end)
+    |> Enum.reverse()
   end
 end
