@@ -37,4 +37,25 @@ defmodule Day7Part1Test do
     test "one pair" do assert Day7Part1.get_hand_type(String.split("A23A4", "", trim: :true)) == "One pair" end
     test "high card" do assert Day7Part1.get_hand_type(String.split("23456", "", trim: :true)) == "High card" end
   end
+
+  describe "compares cards" do
+    test "A and 2" do
+      assert Day7Part1.is_stronger?("A", "2") == true
+      assert Day7Part1.is_stronger?("2", "A") == false
+    end
+
+    test "J and T" do
+      assert Day7Part1.is_stronger?("J", "T") == true
+      assert Day7Part1.is_stronger?("T", "J") == false
+    end
+
+    test "8 and 6" do
+      assert Day7Part1.is_stronger?("8", "6") == true
+      assert Day7Part1.is_stronger?("6", "8") == false
+    end
+
+    test "3 and 3" do
+      assert Day7Part1.is_stronger?("3", "3") == false
+    end
+  end
 end

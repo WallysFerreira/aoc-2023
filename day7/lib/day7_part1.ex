@@ -29,4 +29,10 @@ defmodule Day7Part1 do
       true -> "High card"
     end
   end
+
+  def is_stronger?(card1, card2) do
+    cards_list = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+
+    Enum.find_index(cards_list, &(card1 == &1)) > Enum.find_index(cards_list, &(card2 == &1))
+  end
 end
