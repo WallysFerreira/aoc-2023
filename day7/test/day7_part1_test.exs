@@ -40,22 +40,22 @@ defmodule Day7Part1Test do
 
   describe "compares cards" do
     test "A and 2" do
-      assert Day7Part1.is_stronger?("A", "2") == true
-      assert Day7Part1.is_stronger?("2", "A") == false
+      assert Day7Part1.compare("A", "2") == 1
+      assert Day7Part1.compare("2", "A") == 2
     end
 
     test "J and T" do
-      assert Day7Part1.is_stronger?("J", "T") == true
-      assert Day7Part1.is_stronger?("T", "J") == false
+      assert Day7Part1.compare("J", "T") == 1
+      assert Day7Part1.compare("T", "J") == 2
     end
 
     test "8 and 6" do
-      assert Day7Part1.is_stronger?("8", "6") == true
-      assert Day7Part1.is_stronger?("6", "8") == false
+      assert Day7Part1.compare("8", "6") == 1
+      assert Day7Part1.compare("6", "8") == 2
     end
 
     test "3 and 3" do
-      assert Day7Part1.is_stronger?("3", "3") == false
+      assert Day7Part1.compare("3", "3") == 0
     end
   end
 

@@ -30,10 +30,15 @@ defmodule Day7Part1 do
     end
   end
 
-  def is_stronger?(card1, card2) when is_binary(card1) do
+  # Returns 0 if cards are of equal strength. Otherwise returns the number of the strongest card
+  def compare(card1, card2) when is_binary(card1) do
     cards_list = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
 
-    Enum.find_index(cards_list, &(card1 == &1)) > Enum.find_index(cards_list, &(card2 == &1))
+    cond do
+      Enum.find_index(cards_list, &(card1 == &1)) > Enum.find_index(cards_list, &(card2 == &1)) -> 1
+      Enum.find_index(cards_list, &(card1 == &1)) < Enum.find_index(cards_list, &(card2 == &1)) -> 2
+      true -> 0
+    end
   end
 
   def is_stronger?(hand1, hand2) when is_list(hand1) do
