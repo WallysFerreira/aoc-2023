@@ -82,4 +82,10 @@ defmodule Day7Part1 do
     end)
     |> Enum.reverse()
   end
+
+  def get_total_winnings(hands) do
+    rank_hands(hands)
+    |> Enum.map(&(&1.rank * &1.bid))
+    |> Enum.sum()
+  end
 end

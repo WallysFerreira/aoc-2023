@@ -72,7 +72,7 @@ defmodule Day7Part1Test do
   end
 
   test "ranks hands" do
-    hands = Day7Part1.get_info("files/example")
+    hands = Day7Part1.get_info(@example_path)
 
     assert Day7Part1.rank_hands(hands) == [
       %{hand: ["3", "2", "T", "3", "K"], bid: 765, rank: 1},
@@ -81,5 +81,11 @@ defmodule Day7Part1Test do
       %{hand: ["K", "T", "J", "J", "T"], bid: 220, rank: 2},
       %{hand: ["Q", "Q", "Q", "J", "A"], bid: 483, rank: 5}
     ]
+  end
+
+  test "calculates total winnings" do
+    hands = Day7Part1.get_info(@example_path)
+
+    assert Day7Part1.get_total_winnings(hands) == 6440
   end
 end
