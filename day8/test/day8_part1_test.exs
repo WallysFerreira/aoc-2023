@@ -17,4 +17,9 @@ defmodule Day8Part1Test do
       }
     }
   end
+
+  test "returns right element from instruction" do
+    assert Day8Part1.get_element({"DDD", "EEE"}, :L) == "DDD"
+    assert Day8Part1.get_element({"GGG", "UUU"}, :R) == "UUU"
+  end
 end

@@ -27,4 +27,13 @@ defmodule Day8Part1 do
 
     %{instructions: instructions, network: network}
   end
+
+  def get_element(node, instruction) do
+    {first, second} = node
+
+    cond do
+      instruction == :L -> first
+      instruction == :R -> second
+    end
+  end
 end
