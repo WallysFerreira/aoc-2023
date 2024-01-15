@@ -12,6 +12,7 @@ defmodule Day8Part1 do
     instructions =
       Enum.at(lines, 0)
       |> String.split("", trim: true)
+      |> Enum.map(&String.to_atom/1)
 
     network =
       Enum.drop(lines, 1)

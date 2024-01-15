@@ -5,7 +5,7 @@ defmodule Day8Part1Test do
 
   test "reads map" do
     assert Day8Part1.read_map(@example_path) == %{
-      instructions: ["R", "L"],
+      instructions: [:R, :L],
       network: %{
         "AAA": {"BBB", "CCC"},
         "BBB": {"DDD", "EEE"},
