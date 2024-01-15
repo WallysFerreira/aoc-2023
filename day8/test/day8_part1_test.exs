@@ -42,4 +42,14 @@ defmodule Day8Part1Test do
       assert Day8Part1.find_ZZZ(@example2_path) == ["AAA", "BBB", "AAA", "BBB", "AAA", "BBB"]
     end
   end
+
+  describe "counts steps to ZZZ" do
+    test "in example 1" do
+      assert Day8Part1.count_steps_to_ZZZ(@example_path) == 2
+    end
+
+    test "in example 2" do
+      assert Day8Part1.count_steps_to_ZZZ(@example2_path) == 6
+    end
+  end
 end

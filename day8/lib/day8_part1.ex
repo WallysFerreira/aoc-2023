@@ -56,4 +56,9 @@ defmodule Day8Part1 do
     end)
     |> Enum.reverse()
   end
+
+  def count_steps_to_ZZZ(path) do
+    find_ZZZ(path)
+    |> length()
+  end
 end
