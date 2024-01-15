@@ -35,9 +35,9 @@ defmodule Day7Part1 do
     cards_list = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
 
     cond do
-      Enum.find_index(cards_list, &(card1 == &1)) > Enum.find_index(cards_list, &(card2 == &1)) -> 1
-      Enum.find_index(cards_list, &(card1 == &1)) < Enum.find_index(cards_list, &(card2 == &1)) -> 2
-      true -> 0
+      Enum.find_index(cards_list, &(card1 == &1)) > Enum.find_index(cards_list, &(card2 == &1)) -> :first
+      Enum.find_index(cards_list, &(card1 == &1)) < Enum.find_index(cards_list, &(card2 == &1)) -> :second
+      true -> :equal
     end
   end
 
@@ -52,15 +52,15 @@ defmodule Day7Part1 do
         Enum.reduce_while(0..4, 0, fn idx, _ ->
           result = compare(Enum.at(hand1, idx), Enum.at(hand2, idx))
 
-          if result != 0 do
+          if result != :equal do
             {:halt, result}
           else
             {:cont, result}
           end
         end)
 
-      hand1_idx > hand2_idx -> 1
-      hand1_idx < hand2_idx -> 2
+      hand1_idx > hand2_idx -> :first
+      hand1_idx < hand2_idx -> :second
     end
   end
 
@@ -71,7 +71,7 @@ defmodule Day7Part1 do
       rank =
         remaining
         |> Enum.reduce(0, fn opposing_hand, count ->
-          if compare(current_hand.hand, opposing_hand.hand) == 1 do
+          if compare(current_hand.hand, opposing_hand.hand) == :first do
             count + 1
           else
             count

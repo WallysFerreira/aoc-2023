@@ -30,49 +30,49 @@ defmodule Day7Part2Test do
 
   describe "compares cards" do
     test "A and 2" do
-      assert Day7Part2.compare("A", "2") == 1
-      assert Day7Part2.compare("2", "A") == 2
+      assert Day7Part2.compare("A", "2") == :first
+      assert Day7Part2.compare("2", "A") == :second
     end
 
     test "J and T" do
-      assert Day7Part2.compare("J", "T") == 2
-      assert Day7Part2.compare("T", "J") == 1
+      assert Day7Part2.compare("J", "T") == :second
+      assert Day7Part2.compare("T", "J") == :first
     end
 
     test "8 and 6" do
-      assert Day7Part2.compare("8", "6") == 1
-      assert Day7Part2.compare("6", "8") == 2
+      assert Day7Part2.compare("8", "6") == :first
+      assert Day7Part2.compare("6", "8") == :second
     end
 
     test "3 and 3" do
-      assert Day7Part2.compare("3", "3") == 0
+      assert Day7Part2.compare("3", "3") == :equal
     end
   end
 
   describe "compares hands" do
     test "AAAAA and 23456" do
-      assert Day7Part2.compare(String.split("AAAAA", "", trim: :true), String.split("23456", "", trim: :true)) == 1
-      assert Day7Part2.compare(String.split("23456", "", trim: :true), String.split("AAAAA", "", trim: :true)) == 2
+      assert Day7Part2.compare(String.split("AAAAA", "", trim: :true), String.split("23456", "", trim: :true)) == :first
+      assert Day7Part2.compare(String.split("23456", "", trim: :true), String.split("AAAAA", "", trim: :true)) == :second
     end
 
     test "33332 and 2AAAA" do
-      assert Day7Part2.compare(String.split("33332", "", trim: :true), String.split("2AAAA", "", trim: :true)) == 1
-      assert Day7Part2.compare(String.split("2AAAA", "", trim: :true), String.split("33332", "", trim: :true)) == 2
+      assert Day7Part2.compare(String.split("33332", "", trim: :true), String.split("2AAAA", "", trim: :true)) == :first
+      assert Day7Part2.compare(String.split("2AAAA", "", trim: :true), String.split("33332", "", trim: :true)) == :second
     end
 
     test "77888 and 77788" do
-      assert Day7Part2.compare(String.split("77888", "", trim: :true), String.split("77788", "", trim: :true)) == 1
-      assert Day7Part2.compare(String.split("77788", "", trim: :true), String.split("77888", "", trim: :true)) == 2
+      assert Day7Part2.compare(String.split("77888", "", trim: :true), String.split("77788", "", trim: :true)) == :first
+      assert Day7Part2.compare(String.split("77788", "", trim: :true), String.split("77888", "", trim: :true)) == :second
     end
 
     test "KK677 and KTJJT" do
-      assert Day7Part2.compare(String.split("KK677", "", trim: :true), String.split("KTJJT", "", trim: :true)) == 2
-      assert Day7Part2.compare(String.split("KTJJT", "", trim: :true), String.split("KK677", "", trim: :true)) == 1
+      assert Day7Part2.compare(String.split("KK677", "", trim: :true), String.split("KTJJT", "", trim: :true)) == :second
+      assert Day7Part2.compare(String.split("KTJJT", "", trim: :true), String.split("KK677", "", trim: :true)) == :first
     end
 
     test "QQQJA and T55J5" do
-      assert Day7Part2.compare(String.split("QQQJA", "", trim: :true), String.split("T55J5", "", trim: :true)) == 1
-      assert Day7Part2.compare(String.split("T55J5", "", trim: :true), String.split("QQQJA", "", trim: :true)) == 2
+      assert Day7Part2.compare(String.split("QQQJA", "", trim: :true), String.split("T55J5", "", trim: :true)) == :first
+      assert Day7Part2.compare(String.split("T55J5", "", trim: :true), String.split("QQQJA", "", trim: :true)) == :second
     end
   end
 
