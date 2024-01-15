@@ -36,4 +36,24 @@ defmodule Day8Part1 do
       instruction == :R -> second
     end
   end
+
+  def find_ZZZ(path) do
+    map = read_map(path)
+
+    Stream.cycle(map.instructions)
+    |> Enum.reduce_while({["AAA"], Map.get(map.network, :AAA)}, fn instruction, acc ->
+      {path, next_node} = acc
+
+      element =
+        next_node
+        |> get_element(instruction)
+
+      if element == "ZZZ" do
+        {:halt, path}
+      else
+        {:cont, {[element | path], Map.get(map.network, String.to_atom(element))}}
+      end
+    end)
+    |> Enum.reverse()
+  end
 end
