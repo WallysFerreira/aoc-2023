@@ -1,18 +1,4 @@
 defmodule Day8Part1 do
-  @moduledoc """
-  Documentation for `Day8`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Day8.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def read_map(path) do
   end
 end
