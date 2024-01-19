@@ -36,7 +36,23 @@ defmodule Day8Part2Test do
     assert Day8Part2.get_lasts(map) == [{:"11Z", {"11B", "XXX"}}, {:"22Z", {"22B", "22B"}}]
   end
 
-  test "find path to last nodes" do
-    assert Day8Part2.path_to_last_node(@example_path) == [[:"11A", :"11B", :"11Z", :"11B", :"11Z", :"11B"], [:"22A", :"22B", :"22C", :"22Z", :"22B", :"22C"]]
+  test "finds path to all last nodes" do
+    assert Day8Part2.path_to_all_last_nodes(@example_path) == [[:"11A", :"11B", :"11Z", :"11B", :"11Z", :"11B"], [:"22A", :"22B", :"22C", :"22Z", :"22B", :"22C"]]
+  end
+
+  describe "finds path to one last node at a time" do
+    test "starting at 11A" do
+      map = Day8Part2.read_map(@example_path)
+      assert Day8Part2.path_to_last_node(map, :"11A") == [:"11A", :"11B"]
+    end
+
+    test "starting at 22A" do
+      map = Day8Part2.read_map(@example_path)
+      assert Day8Part2.path_to_last_node(map, :"22A") == [:"22A", :"22B", :"22C"]
+    end
+  end
+
+  test "gets number of steps to all last nodes" do
+    assert Day8Part2.count_steps_to_all_last_nodes(@example_path) == 6
   end
 end

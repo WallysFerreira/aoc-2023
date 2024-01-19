@@ -55,61 +55,61 @@ defmodule Day8Part2 do
     end)
   end
 
-  def path_to_last_node(path) do
-    map = read_map(path)
-
-    starting_nodes = get_firsts(map) |> Enum.map(&[&1])
-    ending_nodes = get_lasts(map) |> Enum.map(&[&1])
-
-    starting_nodes_keys =
-      starting_nodes
-      |> Enum.map(fn node ->
-        {node_key, _node_value} = Enum.at(node, 0)
-        [node_key]
+  def path_to_last_node(map, starting_node_key) do
+    index_of_node =
+      get_firsts(map)
+      |> Enum.find_index(fn node ->
+        {node_key, _node_value} = node
+        node_key == starting_node_key
       end)
 
+    {_starting_node_key, starting_node_value} =
+      get_firsts(map)
+      |> Enum.at(index_of_node)
+
+    {last_node_key, _last_node_value} =
+      get_lasts(map)
+      |> Enum.at(index_of_node)
+
     Stream.cycle(map.instructions)
-    |> Enum.reduce_while({starting_nodes_keys, List.flatten(starting_nodes)}, fn instruction, acc ->
-      {paths, current_nodes} = acc
+    |> Enum.reduce_while({[starting_node_key], starting_node_value}, fn instruction, acc ->
+      {path_till_now, current_node} = acc
 
-      next_nodes =
-        current_nodes
-        |> Enum.map(fn current_node ->
-          {_node_key, node_values} = current_node
+      next_node_key = get_element(current_node, instruction)
 
-          get_element(node_values, instruction)
-        end)
-        |> Enum.map(fn node_key ->
-          map.network
-          |> Enum.find(fn map_node ->
-            {map_node_key, _map_node_value} = map_node
-            String.to_atom(node_key) == map_node_key
-          end)
-        end)
-
-      found_both? =
-        Enum.with_index(next_nodes)
-        |> Enum.all?(fn node_with_idx ->
-          {node, idx} = node_with_idx
-          {next_node_key, _next_node_value} = node
-
-          {ending_node_key, _ending_node_values} = Enum.at(Enum.at(ending_nodes, idx), 0)
-          ending_node_key == next_node_key
-        end)
-
-      if found_both? do
-        {:halt, paths}
+      if String.at(next_node_key, 2) == "Z" do
+        {:halt, path_till_now}
       else
-        paths_till_now =
-          Enum.with_index(paths)
-          |> Enum.map(fn path_tuple ->
-            {path, idx} = path_tuple
-            {next_node_key, _next_node_value} = Enum.at(next_nodes, idx)
+        {:cont, {List.insert_at(path_till_now, -1, String.to_atom(next_node_key)), Map.get(map.network, String.to_atom(next_node_key))}}
+      end
+    end)
+  end
 
-            path
-            |> List.insert_at(-1, next_node_key)
-          end)
-        {:cont, {paths_till_now, next_nodes}}
+  def count_steps_to_all_last_nodes(path) do
+    map = read_map(path)
+
+    lengths =
+      map
+      |> get_firsts()
+      |> Enum.map(fn node ->
+        {key, _value} = node
+
+        path_to_last_node(map, key)
+        |> length()
+      end)
+
+    lengths
+    |> Enum.reduce_while(lengths, fn _length, acc ->
+      a_b = Enum.take(acc, 2)
+
+      new_list =
+        Enum.slice(acc, 2..-1)
+        |> List.insert_at(0, Math.lcm(Enum.at(a_b, 0), Enum.at(a_b, 1)))
+
+      if length(new_list) == 1 do
+        {:halt, Enum.at(new_list, 0)}
+      else
+        {:cont, new_list}
       end
     end)
   end
