@@ -73,4 +73,10 @@ defmodule Day9Part1Test do
       ]
     end
   end
+
+  test "sum all next values of main lists" do
+    lists = Day9Part1.read_file(@example_path)
+
+    assert Day9Part1.sum_next_values(lists) == 114
+  end
 end

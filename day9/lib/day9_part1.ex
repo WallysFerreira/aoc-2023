@@ -50,7 +50,6 @@ defmodule Day9Part1 do
           |> Enum.at(current_list_idx - 1)
         end
 
-
       new_list =
         current_list
         |> List.insert_at(-1, List.last(dif_list) + List.last(current_list))
@@ -58,5 +57,13 @@ defmodule Day9Part1 do
       List.replace_at(updated_lists, current_list_idx, new_list)
     end)
     |> Enum.reverse()
+  end
+
+  def sum_next_values(lists) do
+    lists
+    |> Enum.map(&get_next_values(&1))
+    |> Enum.map(&Enum.at(&1, 0))
+    |> Enum.map(&List.last(&1))
+    |> Enum.sum()
   end
 end
