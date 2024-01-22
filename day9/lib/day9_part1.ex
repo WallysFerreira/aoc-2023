@@ -25,6 +25,7 @@ defmodule Day9Part1 do
       current_dif = get_differences(current_list)
 
       if Enum.all?(current_dif, fn elem -> elem == 0 end) do
+        current_dif = List.insert_at(current_dif, -1, 0)
         {:halt, List.insert_at(differences, -1, current_dif)}
       else
         {:cont, {current_dif, List.insert_at(differences, -1, current_dif)}}
