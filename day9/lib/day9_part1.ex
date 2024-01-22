@@ -25,11 +25,38 @@ defmodule Day9Part1 do
       current_dif = get_differences(current_list)
 
       if Enum.all?(current_dif, fn elem -> elem == 0 end) do
-        current_dif = List.insert_at(current_dif, -1, 0)
-        {:halt, List.insert_at(differences, -1, current_dif)}
+        {:halt, differences}
       else
         {:cont, {current_dif, List.insert_at(differences, -1, current_dif)}}
       end
     end)
+  end
+
+  def get_next_values(list) do
+    old_list =
+      List.insert_at(find_all_differences(list), 0, list)
+      |> Enum.reverse()
+
+    old_list
+    |> Enum.with_index()
+    |> Enum.reduce(old_list, fn current, updated_lists ->
+      {current_list, current_list_idx} = current
+
+      dif_list =
+        if current_list_idx == 0 do
+          [0]
+        else
+          updated_lists
+          |> Enum.at(current_list_idx - 1)
+        end
+
+
+      new_list =
+        current_list
+        |> List.insert_at(-1, List.last(dif_list) + List.last(current_list))
+
+      List.replace_at(updated_lists, current_list_idx, new_list)
+    end)
+    |> Enum.reverse()
   end
 end
