@@ -169,4 +169,18 @@ defmodule Part1Test do
       assert Enum.all?(Enum.at(results, 3)) == false
     end
   end
+
+  describe "finds start of loop" do
+    test "on first example" do
+      lines = Part1.read_file(@example1_path)
+
+      assert Part1.find_start(lines) == {1, 1}
+    end
+
+    test "on second example" do
+      lines = Part1.read_file(@example2_path)
+
+      assert Part1.find_start(lines) == {0, 2}
+    end
+  end
 end

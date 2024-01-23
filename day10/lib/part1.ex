@@ -42,4 +42,22 @@ defmodule Part1 do
         end
     end
   end
+
+  def find_start(lines) do
+    lines
+    |> Enum.map(&String.codepoints(&1))
+    |> Enum.with_index()
+    |> Enum.reduce_while(0, fn chars_with_index, _acc ->
+      {chars, idx} = chars_with_index
+
+      x = chars
+      |> Enum.find_index(&(&1 == "S"))
+
+      if x == nil do
+        {:cont, 0}
+      else
+        {:halt, {x, idx}}
+      end
+    end)
+  end
 end
