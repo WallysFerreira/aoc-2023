@@ -231,4 +231,24 @@ defmodule Part1Test do
       assert Part1.get_next_pipe(lines, {1, 2}) == {1, 1}
     end
   end
+
+  describe "traces steps in loop using one cursor" do
+    test "on first example" do
+      assert Part1.get_loop_path(@example1_path) == [{2, 1}, {3, 1}, {3, 2}, {3, 3}, {2, 3}, {1, 3}, {1, 2}]
+    end
+
+    test "on second example" do
+      assert Part1.get_loop_path(@example2_path) == [{1, 2}, {1, 1}, {2, 1}, {2, 0}, {3, 0}, {3, 1}, {3, 2}, {4, 2}, {4, 3}, {3, 3}, {2, 3}, {1, 3}, {1, 4}, {0, 4}, {0, 3}]
+    end
+  end
+
+  describe "finds farthest point in loop" do
+    test "on first example" do
+      assert Part1.find_farthest_point(@example1_path) == 4
+    end
+
+    test "on second example" do
+      assert Part1.find_farthest_point(@example2_path) == 8
+    end
+  end
 end

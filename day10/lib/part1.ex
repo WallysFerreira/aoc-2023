@@ -93,7 +93,7 @@ defmodule Part1 do
     ]
   end
 
-  def get_next_pipe(map, starting_coords) do
+  def get_next_pipe(map, starting_coords, excluded_coords \\ []) do
     {starting_x, starting_y} = starting_coords
     starting_char = String.at(Enum.at(map, starting_y), starting_x)
 
@@ -102,22 +102,57 @@ defmodule Part1 do
     |> get_surrounding_coordinates()
     |> Enum.zip([:north, :east, :south, :west])
     # Find the first connectable pipe in surroundings
-    |> Enum.reduce_while({}, fn pipe_coordinate_with_direction, acc ->
+    |> Enum.reject(fn coord_with_dir ->
+      {coord, _dir} = coord_with_dir
+
+      coord == nil
+    end)
+    |> Enum.reduce_while(nil, fn pipe_coordinate_with_direction, _acc ->
       {pipe_coordinate, direction} = pipe_coordinate_with_direction
       {pipe_x, pipe_y} = pipe_coordinate
 
-      pipe_char = String.at(Enum.at(map, pipe_y), pipe_x)
+      pipe_char =
+        if pipe_y >= length(map) do
+          "."
+        else
+          if pipe_x > String.length(Enum.at(map, pipe_y)) do
+            "."
+          else
+            String.at(Enum.at(map, pipe_y), pipe_x)
+          end
+        end
 
-      IO.inspect("Pipe 1 #{starting_char} at #{starting_x}, #{starting_y}\n
-      Pipe 2 #{pipe_char} at #{pipe_x}, #{pipe_y}\n
-      Connects in #{direction}? #{connectable?(starting_char, pipe_char, direction)}")
-
-      if connectable?(starting_char, pipe_char, direction) do
-
-        {:halt, pipe_coordinate}
+      if Enum.member?(excluded_coords, pipe_coordinate) do
+        {:cont, nil}
       else
-        {:cont, {}}
+        if connectable?(starting_char, pipe_char, direction) do
+          {:halt, pipe_coordinate}
+        else
+          {:cont, nil}
+        end
       end
     end)
+  end
+
+  def get_loop_path(file_path) do
+    lines = read_file(file_path)
+    starting_coordinates = find_start(lines)
+
+    Stream.cycle(0..1)
+    |> Enum.reduce_while({[], starting_coordinates}, fn _, acc ->
+      {path_till_now, current_coordinates} = acc
+
+      next_coordinates = get_next_pipe(lines, current_coordinates, path_till_now)
+
+      if next_coordinates == starting_coordinates do
+        {:halt, path_till_now}
+      else
+        {:cont, {List.insert_at(path_till_now, -1, next_coordinates), next_coordinates}}
+      end
+    end)
+  end
+
+  def find_farthest_point(file_path) do
+    ((get_loop_path(file_path) |> length()) + 1) / 2
   end
 end
