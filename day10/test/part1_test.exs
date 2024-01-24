@@ -242,6 +242,22 @@ defmodule Part1Test do
     end
   end
 
+  describe "traces steps in loop using two cursors" do
+    test "on first example" do
+      assert Part1.get_loop_paths(@example1_path) == [
+        [{2, 1}, {3, 1}, {3, 2}, {3, 3}],
+        [{1, 2}, {1, 3}, {2, 3}, {3, 3}]
+      ]
+    end
+
+    test "on second example" do
+      assert Part1.get_loop_paths(@example2_path) == [
+        [{1, 2}, {1, 1}, {2, 1}, {2, 0}, {3, 0}, {3, 1}, {3, 2}, {4, 2}],
+        [{0, 3}, {0, 4}, {1, 4}, {1, 3}, {2, 3}, {3, 3}, {4, 3}, {4, 2}]
+      ]
+    end
+  end
+
   describe "finds farthest point in loop" do
     test "on first example" do
       assert Part1.find_farthest_point(@example1_path) == 4

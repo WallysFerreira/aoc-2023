@@ -122,7 +122,16 @@ defmodule Part1 do
           end
         end
 
-      if Enum.member?(excluded_coords, pipe_coordinate) do
+      should_be_excluded? =
+        if is_list(Enum.at(excluded_coords, 0)) do
+          excluded_coords
+          |> Enum.map(&Enum.member?(&1, pipe_coordinate))
+          |> Enum.any?()
+        else
+          Enum.member?(excluded_coords, pipe_coordinate)
+        end
+
+      if should_be_excluded? do
         {:cont, nil}
       else
         if connectable?(starting_char, pipe_char, direction) do
@@ -152,7 +161,45 @@ defmodule Part1 do
     end)
   end
 
+  def get_loop_paths(file_path) do
+    lines = read_file(file_path)
+    starting_coordinates = find_start(lines)
+
+    Stream.cycle(0..1)
+    |> Enum.reduce_while({[[], []], {starting_coordinates, starting_coordinates}}, fn _, acc ->
+      {path_till_now, current_coordinates} = acc
+      {curr_coords_1, curr_coords_2} = current_coordinates
+
+      excluded_coords =
+        path_till_now
+        |> Enum.map(&List.insert_at(&1, 0, starting_coordinates))
+
+      next_coords_1 = get_next_pipe(lines, curr_coords_1, excluded_coords)
+      path_till_now = [Enum.at(path_till_now, 0) |> List.insert_at(-1, next_coords_1), Enum.at(path_till_now, 1)]
+
+      excluded_coords =
+        path_till_now
+        |> Enum.map(&List.insert_at(&1, 0, starting_coordinates))
+
+      next_coords_2 = get_next_pipe(lines, curr_coords_2, excluded_coords)
+      path_till_now =
+      if next_coords_2 == nil do
+        [Enum.at(path_till_now, 0), Enum.at(path_till_now, 1) |> List.insert_at(-1, next_coords_1)]
+      else
+        [Enum.at(path_till_now, 0), Enum.at(path_till_now, 1) |> List.insert_at(-1, next_coords_2)]
+      end
+
+      if next_coords_2 == nil do
+        {:halt, path_till_now}
+      else
+        {:cont, {path_till_now, {next_coords_1, next_coords_2}}}
+      end
+    end)
+  end
+
   def find_farthest_point(file_path) do
-    ((get_loop_path(file_path) |> length()) + 1) / 2
+    get_loop_paths(file_path)
+    |> Enum.at(0)
+    |> length()
   end
 end
