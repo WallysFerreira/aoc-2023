@@ -61,8 +61,8 @@ defmodule Part1 do
     end)
   end
 
-  def get_surrounding_coordinates(coordinates) do
-    {original_x, original_y} = coordinates
+  def get_surrounding_coords(coords) do
+    {original_x, original_y} = coords
 
     north = [original_x, original_y - 1]
     east = [original_x + 1, original_y]
@@ -99,7 +99,7 @@ defmodule Part1 do
 
     # Get surroundings
     starting_coords
-    |> get_surrounding_coordinates()
+    |> get_surrounding_coords()
     |> Enum.zip([:north, :east, :south, :west])
     # Find the first connectable pipe in surroundings
     |> Enum.reject(fn coord_with_dir ->
@@ -145,41 +145,41 @@ defmodule Part1 do
 
   def get_loop_path(file_path) do
     lines = read_file(file_path)
-    starting_coordinates = find_start(lines)
+    starting_coords = find_start(lines)
 
     Stream.cycle(0..1)
-    |> Enum.reduce_while({[], starting_coordinates}, fn _, acc ->
-      {path_till_now, current_coordinates} = acc
+    |> Enum.reduce_while({[], starting_coords}, fn _, acc ->
+      {path_till_now, current_coords} = acc
 
-      next_coordinates = get_next_pipe(lines, current_coordinates, path_till_now)
+      next_coords = get_next_pipe(lines, current_coords, path_till_now)
 
-      if next_coordinates == starting_coordinates do
+      if next_coords == starting_coords do
         {:halt, path_till_now}
       else
-        {:cont, {List.insert_at(path_till_now, -1, next_coordinates), next_coordinates}}
+        {:cont, {List.insert_at(path_till_now, -1, next_coords), next_coords}}
       end
     end)
   end
 
   def get_loop_paths(file_path) do
     lines = read_file(file_path)
-    starting_coordinates = find_start(lines)
+    starting_coords = find_start(lines)
 
     Stream.cycle(0..1)
-    |> Enum.reduce_while({[[], []], {starting_coordinates, starting_coordinates}}, fn _, acc ->
-      {path_till_now, current_coordinates} = acc
-      {curr_coords_1, curr_coords_2} = current_coordinates
+    |> Enum.reduce_while({[[], []], {starting_coords, starting_coords}}, fn _, acc ->
+      {path_till_now, current_coords} = acc
+      {curr_coords_1, curr_coords_2} = current_coords
 
       excluded_coords =
         path_till_now
-        |> Enum.map(&List.insert_at(&1, 0, starting_coordinates))
+        |> Enum.map(&List.insert_at(&1, 0, starting_coords))
 
       next_coords_1 = get_next_pipe(lines, curr_coords_1, excluded_coords)
       path_till_now = [Enum.at(path_till_now, 0) |> List.insert_at(-1, next_coords_1), Enum.at(path_till_now, 1)]
 
       excluded_coords =
         path_till_now
-        |> Enum.map(&List.insert_at(&1, 0, starting_coordinates))
+        |> Enum.map(&List.insert_at(&1, 0, starting_coords))
 
       next_coords_2 = get_next_pipe(lines, curr_coords_2, excluded_coords)
       path_till_now =

@@ -184,32 +184,32 @@ defmodule Part1Test do
     end
   end
 
-  describe "gets north, east, south, west coordinates" do
-    test "using coordinates of S in first example" do
+  describe "gets north, east, south, west coords" do
+    test "using coords of S in first example" do
       lines = Part1.read_file(@example1_path)
-      coordinates_of_S = Part1.find_start(lines)
+      coords_of_S = Part1.find_start(lines)
 
-      assert Part1.get_surrounding_coordinates(coordinates_of_S) == [{1, 0}, {2, 1}, {1, 2}, {0, 1}]
+      assert Part1.get_surrounding_coords(coords_of_S) == [{1, 0}, {2, 1}, {1, 2}, {0, 1}]
     end
 
-    test "using coordinates of S in second example" do
+    test "using coords of S in second example" do
       lines = Part1.read_file(@example2_path)
-      coordinates_of_S = Part1.find_start(lines)
+      coords_of_S = Part1.find_start(lines)
 
-      assert Part1.get_surrounding_coordinates(coordinates_of_S) == [{0, 1}, {1, 2}, {0, 3}, nil]
+      assert Part1.get_surrounding_coords(coords_of_S) == [{0, 1}, {1, 2}, {0, 3}, nil]
     end
 
-    test "using coordinates on the starting bound" do
-      assert Part1.get_surrounding_coordinates({0, 0}) == [nil, {1, 0}, {0, 1}, nil]
+    test "using coords on the starting bound" do
+      assert Part1.get_surrounding_coords({0, 0}) == [nil, {1, 0}, {0, 1}, nil]
     end
   end
 
-  describe "finds coordinates of next pipe" do
+  describe "finds coords of next pipe" do
     test "from S in first example" do
       lines = Part1.read_file(@example1_path)
-      coordinates_of_S = Part1.find_start(lines)
+      coords_of_S = Part1.find_start(lines)
 
-      assert Part1.get_next_pipe(lines, coordinates_of_S) == {2, 1}
+      assert Part1.get_next_pipe(lines, coords_of_S) == {2, 1}
     end
 
     test "from second step in first example" do
@@ -220,9 +220,9 @@ defmodule Part1Test do
 
     test "from S in second example" do
       lines = Part1.read_file(@example2_path)
-      coordinates_of_S = Part1.find_start(lines)
+      coords_of_S = Part1.find_start(lines)
 
-      assert Part1.get_next_pipe(lines, coordinates_of_S) == {1, 2}
+      assert Part1.get_next_pipe(lines, coords_of_S) == {1, 2}
     end
 
     test "from second step in second example" do
