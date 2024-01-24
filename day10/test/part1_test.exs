@@ -38,43 +38,43 @@ defmodule Part1Test do
     end
 
     test "horizontal with bendeds" do
-      directions = [:west, :east, :north, :south]
+      directions = [:east, :west, :south, :north]
 
       # Tests with J
       results_J =
-        directions -- [:west]
+        directions -- [:east]
         |> Enum.map(&Part1.connectable?("-", "J", &1))
 
       assert Enum.any?(results_J) == false
-      assert Part1.connectable?("-", "J", :west) == true
+      assert Part1.connectable?("-", "J", :east) == true
 
       # Tests with L
       results_L =
-        directions -- [:east]
+        directions -- [:west]
         |> Enum.map(&Part1.connectable?("-", "L", &1))
 
       assert Enum.any?(results_L) == false
-      assert Part1.connectable?("-", "L", :east) == true
+      assert Part1.connectable?("-", "L", :west) == true
 
       # Tests with 7
       results_7 =
-        directions -- [:west]
+        directions -- [:east]
         |> Enum.map(&Part1.connectable?("-", "7", &1))
 
       assert Enum.any?(results_7) == false
-      assert Part1.connectable?("-", "7", :west) == true
+      assert Part1.connectable?("-", "7", :east) == true
 
       # Tests with F
       results_F =
-        directions -- [:east]
+        directions -- [:west]
         |> Enum.map(&Part1.connectable?("-", "F", &1))
 
       assert Enum.any?(results_F) == false
-      assert Part1.connectable?("-", "F", :east) == true
+      assert Part1.connectable?("-", "F", :west) == true
     end
 
     test "vertical with bendeds" do
-      directions = [:west, :east, :north, :south]
+      directions = [:east, :west, :south, :north]
       bendeds = ["J", "L", "7", "F"]
 
       results =
@@ -118,7 +118,7 @@ defmodule Part1Test do
     end
 
     test "start with any" do
-      directions = [:west, :east, :north, :south]
+      directions = [:east, :west, :south, :north]
       pipes = ["-", "|", "J", "L", "7", "F"]
 
       results =
@@ -181,6 +181,54 @@ defmodule Part1Test do
       lines = Part1.read_file(@example2_path)
 
       assert Part1.find_start(lines) == {0, 2}
+    end
+  end
+
+  describe "gets north, east, south, west coordinates" do
+    test "using coordinates of S in first example" do
+      lines = Part1.read_file(@example1_path)
+      coordinates_of_S = Part1.find_start(lines)
+
+      assert Part1.get_surrounding_coordinates(coordinates_of_S) == [{1, 0}, {2, 1}, {1, 2}, {0, 1}]
+    end
+
+    test "using coordinates of S in second example" do
+      lines = Part1.read_file(@example2_path)
+      coordinates_of_S = Part1.find_start(lines)
+
+      assert Part1.get_surrounding_coordinates(coordinates_of_S) == [{0, 1}, {1, 2}, {0, 3}, nil]
+    end
+
+    test "using coordinates on the starting bound" do
+      assert Part1.get_surrounding_coordinates({0, 0}) == [nil, {1, 0}, {0, 1}, nil]
+    end
+  end
+
+  describe "finds coordinates of next pipe" do
+    test "from S in first example" do
+      lines = Part1.read_file(@example1_path)
+      coordinates_of_S = Part1.find_start(lines)
+
+      assert Part1.get_next_pipe(lines, coordinates_of_S) == {2, 1}
+    end
+
+    test "from second step in first example" do
+      lines = Part1.read_file(@example1_path)
+
+      assert Part1.get_next_pipe(lines, {2, 1}) == {3, 1}
+    end
+
+    test "from S in second example" do
+      lines = Part1.read_file(@example2_path)
+      coordinates_of_S = Part1.find_start(lines)
+
+      assert Part1.get_next_pipe(lines, coordinates_of_S) == {1, 2}
+    end
+
+    test "from second step in second example" do
+      lines = Part1.read_file(@example2_path)
+
+      assert Part1.get_next_pipe(lines, {1, 2}) == {1, 1}
     end
   end
 end
