@@ -31,9 +31,64 @@ defmodule Day11Part1 do
       end)
 
     cols
+    |> Enum.map(&to_string/1)
   end
 
-  def expand(path) do
-    read_file(path)
+  def expand_rows(map) do
+    {final_map, _final_offset} =
+      map
+      |> Enum.with_index()
+      |> Enum.reduce({map, 0}, fn tuple, acc ->
+        {row, idx} = tuple
+        {updated_map, offset} = acc
+
+        if Enum.all?(String.split(row, "", trim: true), &(&1 == ".")) do
+          {List.insert_at(updated_map, idx + offset, row), offset + 1}
+        else
+          acc
+        end
+      end)
+
+    final_map
+  end
+
+  def expand_cols(map) do
+    {final_map, _final_offset} =
+      get_columns(map)
+      |> Enum.with_index()
+      |> Enum.reduce({map, 0}, fn tuple, acc ->
+        {col, col_idx} = tuple
+        {updated_map, offset} = acc
+
+        if Enum.all?(String.split(col, "", trim: true), &(&1 == ".")) do
+          updated_map =
+            updated_map
+            |> Enum.with_index()
+            |> Enum.reduce(updated_map, fn row_tuple, updated_map ->
+              {row, row_idx} = row_tuple
+
+              new_row =
+                row
+                |> String.split("", trim: true)
+                |> List.insert_at(col_idx + offset, ".")
+                |> to_string()
+
+              updated_map
+              |> List.replace_at(row_idx, new_row)
+            end)
+
+          {updated_map, offset + 1}
+        else
+          acc
+        end
+      end)
+
+    final_map
+  end
+
+  def expand(map) do
+    map
+    |> expand_rows()
+    |> expand_cols()
   end
 end
