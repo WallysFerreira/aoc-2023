@@ -28,4 +28,21 @@ defmodule Day11Part1Test do
 
     assert Day11Part1.expand(map) == example_expanded
   end
+
+  test "lists galaxies with their coordinates" do
+    map = Day11Part1.read_file(@example_path)
+    expanded_map = Day11Part1.expand(map)
+
+    assert Day11Part1.list_galaxies(expanded_map) == %{
+             1 => %{:x => 4, :y => 0},
+             2 => %{:x => 9, :y => 1},
+             3 => %{:x => 0, :y => 2},
+             4 => %{:x => 8, :y => 5},
+             5 => %{:x => 1, :y => 6},
+             6 => %{:x => 12, :y => 7},
+             7 => %{:x => 9, :y => 10},
+             8 => %{:x => 0, :y => 11},
+             9 => %{:x => 5, :y => 11}
+           }
+  end
 end
