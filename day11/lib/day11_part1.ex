@@ -134,4 +134,27 @@ defmodule Day11Part1 do
 
     found_galaxies
   end
+
+  def calculate_distance(galaxies, galaxy1, galaxy2) do
+    galaxy1 =
+      galaxies
+      |> Map.get(galaxy1)
+
+    galaxy2 =
+      galaxies
+      |> Map.get(galaxy2)
+
+    abs(galaxy2.x - galaxy1.x) + abs(galaxy2.y - galaxy1.y)
+  end
+
+  def sum_distances(galaxies) do
+    Map.keys(galaxies)
+    |> Enum.map(fn current_galaxy_number ->
+      Map.keys(galaxies)
+      |> Enum.slice(current_galaxy_number..-1//1)
+      |> Enum.map(&calculate_distance(galaxies, current_galaxy_number, &1))
+      |> Enum.sum()
+    end)
+    |> Enum.sum()
+  end
 end

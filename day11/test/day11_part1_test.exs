@@ -45,4 +45,51 @@ defmodule Day11Part1Test do
              9 => %{:x => 5, :y => 11}
            }
   end
+
+  describe "calculates distance between galaxies" do
+    test "1 and 7" do
+      galaxies =
+        Day11Part1.read_file(@example_path)
+        |> Day11Part1.expand()
+        |> Day11Part1.list_galaxies()
+
+      assert Day11Part1.calculate_distance(galaxies, 1, 7) == 15
+    end
+
+    test "3 and 6" do
+      galaxies =
+        Day11Part1.read_file(@example_path)
+        |> Day11Part1.expand()
+        |> Day11Part1.list_galaxies()
+
+      assert Day11Part1.calculate_distance(galaxies, 3, 6) == 17
+    end
+
+    test "8 and 9" do
+      galaxies =
+        Day11Part1.read_file(@example_path)
+        |> Day11Part1.expand()
+        |> Day11Part1.list_galaxies()
+
+      assert Day11Part1.calculate_distance(galaxies, 8, 9) == 5
+    end
+
+    test "5 and 9" do
+      galaxies =
+        Day11Part1.read_file(@example_path)
+        |> Day11Part1.expand()
+        |> Day11Part1.list_galaxies()
+
+      assert Day11Part1.calculate_distance(galaxies, 5, 9) == 9
+    end
+  end
+
+  test "sum distances between all pairs of galaxies" do
+    galaxies =
+      Day11Part1.read_file(@example_path)
+      |> Day11Part1.expand()
+      |> Day11Part1.list_galaxies()
+
+    assert Day11Part1.sum_distances(galaxies) == 374
+  end
 end
