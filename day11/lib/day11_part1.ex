@@ -92,6 +92,28 @@ defmodule Day11Part1 do
     |> expand_cols()
   end
 
+  def matches_to_galaxies(matches, galaxies_map, row_idx, galaxies_found_number) do
+    matches
+    |> Enum.with_index()
+    |> Enum.reduce([], fn match, acc ->
+      {match_tuple, match_number} = match
+
+      {col_idx, _match_length} = match_tuple
+
+      acc
+      |> List.insert_at(-1, {
+        galaxies_found_number + match_number,
+        %{x: col_idx, y: row_idx}
+      })
+    end)
+    |> Enum.reduce(galaxies_map, fn galaxy_tuple, acc ->
+      {galaxy_number, galaxy_coords} = galaxy_tuple
+
+      acc
+      |> Map.put(galaxy_number, galaxy_coords)
+    end)
+  end
+
   def list_galaxies(map) do
     {found_galaxies, _} =
       map
@@ -109,24 +131,7 @@ defmodule Day11Part1 do
         else
           found_galaxies =
             matches
-            |> Enum.with_index()
-            |> Enum.reduce([], fn match, acc ->
-              {match_tuple, match_number} = match
-
-              {col_idx, _match_length} = match_tuple
-
-              acc
-              |> List.insert_at(-1, {
-                galaxies_found_number + match_number,
-                %{x: col_idx, y: row_idx}
-              })
-            end)
-            |> Enum.reduce(found_galaxies, fn galaxy_tuple, acc ->
-              {galaxy_number, galaxy_coords} = galaxy_tuple
-
-              acc
-              |> Map.put(galaxy_number, galaxy_coords)
-            end)
+            |> matches_to_galaxies(found_galaxies, row_idx, galaxies_found_number)
 
           {:cont, {found_galaxies, galaxies_found_number + length(matches)}}
         end
